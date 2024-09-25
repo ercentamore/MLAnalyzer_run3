@@ -131,12 +131,12 @@ bool RecHitAnalyzer::runEvtSel_jet_dijet_ditau( const edm::Event& iEvent, const 
 
   edm::Handle<reco::PFTauDiscriminator> DecayMode;
   iEvent.getByToken(tauDecayMode_, DecayMode);
-  edm::Handle<reco::PFTauDiscriminator> MVAIsolation;
-  iEvent.getByToken(tauMVAIsolation_, MVAIsolation);
-  edm::Handle<reco::PFTauDiscriminator> MuonRejection;
-  iEvent.getByToken(tauMuonRejection_, MuonRejection);
-  edm::Handle<reco::PFTauDiscriminator> ElectronRejectionMVA6;
-  iEvent.getByToken(tauElectronRejectionMVA6_, ElectronRejectionMVA6);
+  // edm::Handle<reco::PFTauDiscriminator> MVAIsolation;
+  // iEvent.getByToken(tauMVAIsolation_, MVAIsolation);
+  // edm::Handle<reco::PFTauDiscriminator> MuonRejection;
+  // iEvent.getByToken(tauMuonRejection_, MuonRejection);
+  // edm::Handle<reco::PFTauDiscriminator> ElectronRejectionMVA6;
+  // iEvent.getByToken(tauElectronRejectionMVA6_, ElectronRejectionMVA6);
 
   // JME::JetResolution resPtObj            = JME::JetResolution::get(iSetup, jetResPtType_);
   // JME::JetResolution resPhiObj           = JME::JetResolution::get(iSetup, jetResPhiType_);
@@ -171,7 +171,7 @@ bool RecHitAnalyzer::runEvtSel_jet_dijet_ditau( const edm::Event& iEvent, const 
   //bool IsMC                 = false;
   //if (iEvent.isRealData()) IsMC = false;
   //TAU SELECTION
-  // float tau_sel_mvaID       = -2;
+  float tau_sel_mvaID       = -2;
   float tau_sel_pT          = 20;
 
   //vDiTaus.clear();
@@ -234,8 +234,8 @@ bool RecHitAnalyzer::runEvtSel_jet_dijet_ditau( const edm::Event& iEvent, const 
     //std::cout << " jet ID:" << vMatchedRecoJetIdxs[j] << "   tau ID:" << vMatchedRecoTauIdxs[j]<< std::endl;
 
     reco::PFTauRef iTau1( taus, vMatchedRecoTauIdxs[j] );
-    if (!((*MuonRejection)[iTau1])) continue;
-    if (!((*ElectronRejectionMVA6)[iTau1])) continue;
+    // if (!((*MuonRejection)[iTau1])) continue;
+    // if (!((*ElectronRejectionMVA6)[iTau1])) continue;
     // if ( (*MVAIsolation)[iTau1] < tau_sel_mvaID ) continue;
 
     jet_tau_obj Jet_tau_obj = { vMatchedRecoJetIdxs[j],vMatchedRecoTauIdxs[j] };
@@ -417,19 +417,23 @@ void RecHitAnalyzer::fillEvtSel_jet_dijet_ditau ( const edm::Event& iEvent, cons
 
   edm::Handle<reco::PFTauDiscriminator> DecayMode;
   iEvent.getByToken(tauDecayMode_, DecayMode);
-  edm::Handle<reco::PFTauDiscriminator> MVAIsolation;
-  iEvent.getByToken(tauMVAIsolation_, MVAIsolation);
-  edm::Handle<reco::PFTauDiscriminator> MuonRejection;
-  iEvent.getByToken(tauMuonRejection_, MuonRejection);
-  edm::Handle<reco::PFTauDiscriminator> ElectronRejectionMVA6;
-  iEvent.getByToken(tauElectronRejectionMVA6_, ElectronRejectionMVA6);
+  // edm::Handle<reco::PFTauDiscriminator> MVAIsolation;
+  // iEvent.getByToken(tauMVAIsolation_, MVAIsolation);
+  // edm::Handle<reco::PFTauDiscriminator> MuonRejection;
+  // iEvent.getByToken(tauMuonRejection_, MuonRejection);
+  // edm::Handle<reco::PFTauDiscriminator> ElectronRejectionMVA6;
+  // iEvent.getByToken(tauElectronRejectionMVA6_, ElectronRejectionMVA6);
 
+  // JME::JetResolutionScaleFactor resSFObj = JME::JetResolutionScaleFactor::get(iSetup, jetSFType_);
   // JME::JetResolution resPtObj            = JME::JetResolution::get(iSetup, jetResPtType_);
   // JME::JetResolution resPhiObj           = JME::JetResolution::get(iSetup, jetResPhiType_);
-  // JME::JetResolutionScaleFactor resSFObj = JME::JetResolutionScaleFactor::get(iSetup, jetSFType_);
-  JME::JetResolution resPtObj = JME::JetResolution::get(iSetup, jetResPtToken_);
-  JME::JetResolution resPhiObj = JME::JetResolution::get(iSetup, jetResPhiToken_);
-  JME::JetResolutionScaleFactor resSFObj = JME::JetResolutionScaleFactor::get(iSetup, jetResScaleFactorToken_);
+
+
+  JME::JetResolutionScaleFactor resSFObj = iSetup.getData(jetResScaleFactorToken_);
+  JME::JetResolution resPtObj = iSetup.getData(jetResPtToken_);
+  JME::JetResolution resPhiObj = iSetup.getData(jetResPhiToken_);
+
+
 
   edm::Handle<PFCollection> pfCandsH_;
   iEvent.getByToken( pfCollectionT_, pfCandsH_ );
@@ -510,7 +514,7 @@ void RecHitAnalyzer::fillEvtSel_jet_dijet_ditau ( const edm::Event& iEvent, cons
 
     // fill tau variables
     v_att_tau_pT_.push_back( iTau1->pt() );
-    v_att_tau_mva_.push_back(((*MVAIsolation)[iTau1]) );
+    // v_att_tau_mva_.push_back(((*MVAIsolation)[iTau1]) );
     v_att_tau_dm_.push_back( ((*DecayMode)[iTau1]) );
 
     jet_tau_allCut_obj Jet_tau_FrameCropped_obj = { vJetTauCut[j].jetIdxs, vJetTauCut[j].tauIdxs };

@@ -74,9 +74,9 @@ RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
 
   tauCollectionT_           = consumes<reco::PFTauCollection>(iConfig.getParameter<edm::InputTag>("tauCollection"));
   tauDecayMode_             = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauDecayMode"));
-  tauMVAIsolation_          = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMVAIsolationRaw"));
-  tauMuonRejection_         = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMuonRejectionLoose"));
-  tauElectronRejectionMVA6_ = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauElectronRejectionMVA6VLoose"));
+  // tauMVAIsolation_          = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMVAIsolationRaw"));
+  // tauMuonRejection_         = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMuonRejectionLoose"));
+  // tauElectronRejectionMVA6_ = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauElectronRejectionMVA6VLoose"));
 
   eleCollectionT_           = consumes<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("eleCollection"));
 
@@ -97,18 +97,19 @@ RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
   metSigAlgo_               = new metsig::METSignificance(iConfig);
 
 
+  // transientTrackBuilderT_ = iConfig.getParameter<edm::ESInputTag>("transTrackBuilder");
+  // transTrackBToken_ = esConsumes<TransientTrackBuilder, TransientTrackRecord>(transientTrackBuilderT_) ;
+  transTrackBToken_ = esConsumes<TransientTrackBuilder, TransientTrackRecord>(edm::ESInputTag("", "TransientTrackBuilder")) ;
 
-  transientTrackBuilderT_ = iConfig.getParameter<edm::ESInputTag>("transTrackBuilder");
 
   caloGeomToken_ = esConsumes<CaloGeometry, CaloGeometryRecord>();
   magfieldToken_ = esConsumes<MagneticField, IdealMagneticFieldRecord>();
-  jetResPtToken_ = esConsumes<JME::JetResolutionObject, JetResolutionRcd>();
-  jetResPhiToken_ = esConsumes<JME::JetResolutionObject, JetResolutionRcd>();
-  jetResScaleFactorToken_ = esConsumes<JME::JetResolutionObject, JetResolutionScaleFactorRcd>();
+
+  jetResScaleFactorToken_ = esConsumes<JME::JetResolutionObject, JetResolutionScaleFactorRcd>(edm::ESInputTag("", jetSFType_));
+  jetResPtToken_ = esConsumes<JME::JetResolutionObject, JetResolutionRcd>(edm::ESInputTag("", jetResPtType_));
+  jetResPhiToken_ = esConsumes<JME::JetResolutionObject, JetResolutionRcd>(edm::ESInputTag("", jetResPhiType_));
+
   tTopoToken_ = esConsumes<TrackerTopology, TrackerTopologyRcd>();
-
-  transTrackBToken_ = esConsumes<TransientTrackBuilder, TransientTrackRecord>() ;
-
   tkGeomToken_ = esConsumes<TrackerGeometry, TrackerDigiGeometryRecord>();
 
 

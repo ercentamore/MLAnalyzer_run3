@@ -17,7 +17,9 @@ options.register('processMode',
     info = "process mode: JetLevel or EventLevel")
 options.parseArguments()
 
-process = cms.Process("FEVTAnalyzer")
+
+from Configuration.Eras.Era_Run3_cff import Run3
+process = cms.Process("FEVTAnalyzer", Run3)
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load('Configuration.StandardSequences.MagneticField_cff')
@@ -26,24 +28,14 @@ process.load("RecoTracker.TrackProducer.TrackRefitters_cff")
 process.load("RecoLocalTracker.SiPixelRecHits.SiPixelRecHits_cfi")
 process.load("RecoLocalTracker.SiStripRecHitConverter.SiStripRecHitConverter_cfi")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-
-# process.load("Geometry.ForwardGeometry.CastorGeometry_cfi")
-# process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
-# process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
-# process.load("Geometry.CaloEventSetup.CaloTopology_cfi")
-# process.load("Geometry.CaloEventSetup.CaloGeometry_cff")
-# process.load("Geometry.ForwardGeometry.ForwardGeometry_cfi")
-# process.es_prefer_ZdcGeometryFromDBEP = cms.ESPrefer("ZdcGeometryFromDBEP")
-# process.es_prefer_HcalHardcodeGeometryEP = cms.ESPrefer("HcalHardcodeGeometryEP")
-# process.es_prefer_CastorGeometryFromDBEP = cms.ESPrefer("CastorGeometryFromDBEP")
-# process.es_prefer_CaloTowerGeometryFromDBEP = cms.ESPrefer("CaloTowerGeometryFromDBEP")
-# process.es_prefer_EcalBarrelGeometryFromDBEP = cms.ESPrefer("EcalBarrelGeometryFromDBEP")
-# process.es_prefer_EcalEndcapGeometryFromDBEP = cms.ESPrefer("EcalEndcapGeometryFromDBEP")
-# process.es_prefer_EcalPreshowerGeometryFromDBEP = cms.ESPrefer("EcalPreshowerGeometryFromDBEP")
-
 process.GlobalTag.globaltag = cms.string('130X_mcRun3_2023_realistic_postBPix_v5')
 # process.GlobalTag.globaltag = cms.string('130X_dataRun3_HLT_v1')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
+
+process.load("RecoLocalCalo.EcalRecAlgos.EcalSeverityLevelESProducer_cfi")
+
+process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
+process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
 process.TrackRefitter.TTRHBuilder = 'WithAngleAndTemplate'
 
@@ -59,7 +51,11 @@ process.source = cms.Source("PoolSource",
     )
 print (" >> Loaded",len(options.inputFiles),"input files from list.")
 
-process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
+
+process.options = cms.untracked.PSet(
+    wantSummary = cms.untracked.bool(True)
+    # ,SkipEvent = cms.untracked.vstring('ProductNotFound')
+)
 
 process.load("MLAnalyzer_run3.RecHitAnalyzer.RHAnalyzer_cfi")
 process.fevt.mode = cms.string(options.processMode)
@@ -83,8 +79,8 @@ process.hltFilter = cms.EDFilter("HLTHighLevel",
                                           )
 
 process.p = cms.Path(
-process.siStripMatchedRecHits*process.siPixelRecHits*process.MeasurementTrackerEvent*process.TrackRefitter*
-#  process.hltFilter*
+# process.siStripMatchedRecHits*process.siPixelRecHits*process.MeasurementTrackerEvent*process.TrackRefitter*
+ process.hltFilter*
 #  process.patDefaultSequence*
 process.fevt
 )

@@ -145,6 +145,10 @@
 #include "TauAnalysis/ClassicSVfit/interface/svFitHistogramAdapter.h"
 #include "TauAnalysis/ClassicSVfit/interface/FastMTT.h"
 
+#include "JetMETCorrections/Modules/interface/JetResolutionESProducer.h"
+
+
+
 #include "TH1.h"
 #include "TH1F.h"
 #include "TH2.h"
@@ -252,20 +256,21 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     edm::EDGetTokenT<SiStripRecHit2DCollection> siStripStereoRecHitCollectionT_;
     edm::EDGetTokenT<SiStripRecHit2DCollection> siStripUnmatchedStereoRecHitCollectionT_;
 
-    edm::ESInputTag transientTrackBuilderT_;
+    // edm::ESInputTag transientTrackBuilderT_;
+    edm::ESGetToken<TransientTrackBuilder, TransientTrackRecord> transTrackBToken_;
+
 
     edm::ESGetToken<CaloGeometry, CaloGeometryRecord> caloGeomToken_;
     edm::ESGetToken<MagneticField, IdealMagneticFieldRecord> magfieldToken_;
 
+    edm::ESGetToken<JME::JetResolutionObject, JetResolutionScaleFactorRcd> jetResScaleFactorToken_;
     edm::ESGetToken<JME::JetResolutionObject, JetResolutionRcd> jetResPtToken_;
     edm::ESGetToken<JME::JetResolutionObject, JetResolutionRcd> jetResPhiToken_;
-    edm::ESGetToken<JME::JetResolutionObject, JetResolutionScaleFactorRcd> jetResScaleFactorToken_;
+
 
     edm::ESGetToken<TrackerTopology, TrackerTopologyRcd> tTopoToken_;
-    edm::ESGetToken<TransientTrackBuilder, TransientTrackRecord> transTrackBToken_;
-
     edm::ESGetToken<TrackerGeometry, TrackerDigiGeometryRecord> tkGeomToken_;
-  
+
 
 
 

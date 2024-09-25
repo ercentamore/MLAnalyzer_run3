@@ -7,7 +7,7 @@ inputFiles_='file:/uscms/home/bbbam/nobackup/analysis_run3/MCGeneration/CMSSW_13
 
 #maxEvents_=10
 #maxEvents_=20
-maxEvents_=-1
+maxEvents_=5
 skipEvents_=0#
 #outputFile_='MLAnal_PhaseI_TTbar_13TeVu_trackRefitter.root'
 #outputFile_='GJet.root'
@@ -18,6 +18,7 @@ skipEvents_=0#
 #outputFile_='acd_EmEnriched.root'
 outputFile_='HToAAto4Tau_signal.root'
 
-cmd="cmsTraceExceptions cmsRun %s inputFiles=%s maxEvents=%d skipEvents=%d outputFile=%s"%(cfg,inputFiles_,maxEvents_,skipEvents_,outputFile_)
+# cmd="cmsTraceExceptions cmsRun %s inputFiles=%s maxEvents=%d skipEvents=%d outputFile=%s"%(cfg,inputFiles_,maxEvents_,skipEvents_,outputFile_)
+cmd="cmsRun %s inputFiles=%s maxEvents=%d skipEvents=%d outputFile=%s"%(cfg,inputFiles_,maxEvents_,skipEvents_,outputFile_)
 print(f"{cmd}")
 os.system(cmd)
