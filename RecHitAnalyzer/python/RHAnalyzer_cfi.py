@@ -5,14 +5,13 @@ import FWCore.ParameterSet.Config as cms
 from RecoMET.METProducers.METSignificanceParams_cfi import METSignificanceParams
 
 fevt = cms.EDAnalyzer('RecHitAnalyzer'
-    #, isDebug                        = cms.bool(True)
-    #, isDebug                        = cms.bool(False)
     # , task                           = cms.string("dijet_tau_massregression")
     , task                           = cms.string("dijet_ditau")
     #, task                           = cms.string("tau_classification")
     #, task                           = cms.string("jet_ele_classification")
     #, task                           = cms.string("qcd")
     #, task                           = cms.string("boostedTop")
+    , isDebug                        = cms.bool(False)
     , isMC                           = cms.bool(True)
     , isSignal                       = cms.bool(False)
     , isW                            = cms.bool(False)
@@ -71,8 +70,7 @@ fevt = cms.EDAnalyzer('RecHitAnalyzer'
     , srcJetResPhi                   = cms.string('AK4PFchs_phi')
     #, srcLeptons                     = cms.VInputTag("slimmedElectrons","slimmedMuons","slimmedPhotons"),
     , srcLeptons                     = cms.VInputTag("gedGsfElectrons","muons","gedPhotons")
-    # , transTrackBuilder              = cms.ESInputTag("TransientTrackBuilder") # Old
-    # , transTrackBuilder              = cms.ESInputTag("", "TransientTrackBuilder")
+    , transTrackBuilder              = cms.ESInputTag("", "TransientTrackBuilder")
 
     # Jet level cfg
     , nJets     = cms.int32(-1)

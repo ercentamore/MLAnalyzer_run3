@@ -2,7 +2,7 @@ import os
 
 #cfg='RecHitAnalyzer/python/ConfFile_data_cfg.py'
 cfg='RecHitAnalyzer/python/ConfFile_cfg.py'
-inputFiles_='file:/uscms/home/bbbam/nobackup/analysis_run3/MCGeneration/CMSSW_13_0_17/src/AOD_HToAATo4Tau_extra_collection.root'
+inputFiles_='file:/uscms/home/bbbam/nobackup/analysis_run3/MCGeneration/CMSSW_13_0_17/src/MCProduction_run3/E2E-HToAATo4Tau/AOD_HToAATo4Tau_extra_collection.root'
 # inputFiles_='root://cmseos.fnal.gov//store/group/lpcml/bbbam/MCGeneration/signal_withTrigger/GEN_SIM_HToAATo4Tau_M_8_pythia8_2018UL/raw_to_AODSIM_HToAATo4Tau_M_8/240606_182926/0000/AODSIM_HToAATo4Tau_46_6.root'#pixel checks
 
 #maxEvents_=10

@@ -23,10 +23,10 @@
 //
 RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
 {
-  //debug      = iConfig.getParameter<bool>("isDebug");
+  debug      = iConfig.getParameter<bool>("isDebug");
+  isMC_      = iConfig.getParameter<bool>("isMC");
   mode_      = iConfig.getParameter<std::string>("mode");
   task_      = iConfig.getParameter<std::string>("task");
-  isMC_      = iConfig.getParameter<bool>("isMC");
   isSignal_  = iConfig.getParameter<bool>("isSignal");
   isW_       = iConfig.getParameter<bool>("isW");
   isBoostedTop_   = iConfig.getParameter<bool>("isBoostedTop");
@@ -97,9 +97,9 @@ RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
   metSigAlgo_               = new metsig::METSignificance(iConfig);
 
 
-  // transientTrackBuilderT_ = iConfig.getParameter<edm::ESInputTag>("transTrackBuilder");
-  // transTrackBToken_ = esConsumes<TransientTrackBuilder, TransientTrackRecord>(transientTrackBuilderT_) ;
-  transTrackBToken_ = esConsumes<TransientTrackBuilder, TransientTrackRecord>(edm::ESInputTag("", "TransientTrackBuilder")) ;
+  transientTrackBuilderT_ = iConfig.getParameter<edm::ESInputTag>("transTrackBuilder");
+  transTrackBToken_ = esConsumes<TransientTrackBuilder, TransientTrackRecord>(transientTrackBuilderT_) ;
+  // transTrackBToken_ = esConsumes<TransientTrackBuilder, TransientTrackRecord>(edm::ESInputTag("", "TransientTrackBuilder")) ;
 
 
   caloGeomToken_ = esConsumes<CaloGeometry, CaloGeometryRecord>();
