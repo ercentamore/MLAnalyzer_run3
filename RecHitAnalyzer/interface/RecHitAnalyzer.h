@@ -230,6 +230,8 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     edm::EDGetTokenT<reco::PFTauDiscriminator> tauMuonRejection_;
     edm::EDGetTokenT<reco::PFTauDiscriminator> tauElectronRejectionMVA6_;
 
+    // edm::EDGetTokenT<reco::PFTauDiscriminator> boostedHPSPFTausTask_; // Boosted tau discriminator
+
     std::string   processName_;
     edm::EDGetTokenT<edm::TriggerResults> triggerResultsToken_;
     edm::EDGetTokenT<trigger::TriggerEvent> triggerSummaryToken_;

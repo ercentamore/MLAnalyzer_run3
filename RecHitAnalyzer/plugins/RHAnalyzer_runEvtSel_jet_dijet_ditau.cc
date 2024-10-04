@@ -138,6 +138,9 @@ bool RecHitAnalyzer::runEvtSel_jet_dijet_ditau( const edm::Event& iEvent, const 
   // edm::Handle<reco::PFTauDiscriminator> ElectronRejectionMVA6;
   // iEvent.getByToken(tauElectronRejectionMVA6_, ElectronRejectionMVA6);
 
+  // edm::Handle<reco::PFTauDiscriminator> boostedHPSPFTausTask;
+  // iEvent.getByToken(boostedHPSPFTausTask_, boostedHPSPFTausTask);
+
   // JME::JetResolution resPtObj            = JME::JetResolution::get(iSetup, jetResPtType_);
   // JME::JetResolution resPhiObj           = JME::JetResolution::get(iSetup, jetResPhiType_);
   // JME::JetResolutionScaleFactor resSFObj = JME::JetResolutionScaleFactor::get(iSetup, jetSFType_);
@@ -237,6 +240,10 @@ bool RecHitAnalyzer::runEvtSel_jet_dijet_ditau( const edm::Event& iEvent, const 
     // if (!((*MuonRejection)[iTau1])) continue;
     // if (!((*ElectronRejectionMVA6)[iTau1])) continue;
     // if ( (*MVAIsolation)[iTau1] < tau_sel_mvaID ) continue;
+
+     // if ((*boostedHPSPFTausTask)[iTau1]){
+     //     std::cout << " boostedHPSPFTausTask: passed" << std::endl;
+     // }
 
     jet_tau_obj Jet_tau_obj = { vMatchedRecoJetIdxs[j],vMatchedRecoTauIdxs[j] };
     vJetTau.push_back( Jet_tau_obj );
