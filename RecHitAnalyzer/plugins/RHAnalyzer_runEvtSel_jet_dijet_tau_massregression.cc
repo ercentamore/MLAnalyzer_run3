@@ -333,7 +333,8 @@ bool RecHitAnalyzer::runEvtSel_jet_dijet_tau_massregression( const edm::Event& i
 
       if ( iGen->numberOfMothers() != 1 ) continue;
       aPdgId = std::abs(iGen->mother()->pdgId());
-      if ( abs(iGen->mother()->pdgId()) == 25 && iGen->mother()->mass() < 15 && iGen->mother()->mass() > 3.5) {
+      // if ( abs(iGen->mother()->pdgId()) == 25 && iGen->mother()->mass() < 15 && iGen->mother()->mass() > 3.5) {
+      if ( abs(iGen->mother()->pdgId()) == 25 && iGen->mother()->mass() < 18.1 && iGen->mother()->mass() > 1.1) {
         MatchedPseudoScalar = true;
       }
       else continue;
@@ -346,7 +347,7 @@ bool RecHitAnalyzer::runEvtSel_jet_dijet_tau_massregression( const edm::Event& i
         if ( iGen->mother()->numberOfDaughters() == 2 ){
           if (abs(iGen->mother()->daughter(0)->pdgId()) == 15 && abs(iGen->mother()->daughter(1)->pdgId()) == 15){
             tausdR = reco::deltaR( iGen->mother()->daughter(0)->eta(),iGen->mother()->daughter(0)->phi(), iGen->mother()->daughter(1)->eta(),iGen->mother()->daughter(1)->phi() );
-            if ( tausdR > 0.4 ) continue;
+            // if ( tausdR > 0.4 ) continue;
 
             if ( debug ) std::cout << "   TAUS MOTHER  -> status: " << iGen->mother()->status() << ", id: " << iGen->mother()->pdgId() << ", nDaught: " << iGen->mother()->numberOfDaughters() << " | pt: "<< iGen->mother()->pt() << " eta: " <<iGen->mother()->eta() << " phi: " <<iGen->mother()->phi() << " mass: " <<iGen->mother()->mass() << std::endl;
 
