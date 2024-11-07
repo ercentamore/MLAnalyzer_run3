@@ -466,10 +466,11 @@ bool RecHitAnalyzer::runEvtSel_jet_dijet_tau_massregression( const edm::Event& i
     }
 
   } // reco jets
-  if ( debug ) std::cout << " Matched jets " << nMatchedJets << std::endl;
+  if ( debug ) std::cout << " Matched reco jets " << nMatchedJets << std::endl;
+  if ( debug ) std::cout << " Matched reco Taus " << nMatchedRecoTaus << std::endl;
 
   // Check jet multiplicity
-  if ( nMatchedJets < 1 ) return false;
+  if ( nMatchedJets < 1 && nMatchedRecoTaus < 1) return false;  // modified such that events has at lease one reco jet match to gen tau and reco tau
 
   if ( debug ) std::cout << " >> has_jet_dijet_tau_massregression: passed" << std::endl;
   return true;
