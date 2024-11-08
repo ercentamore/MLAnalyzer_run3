@@ -8,7 +8,7 @@ inputFiles_='root://cmseos.fnal.gov//store/group/lpcml/bbbam/MCGeneration_run3/G
 
 #maxEvents_=10
 #maxEvents_=20
-maxEvents_=10
+maxEvents_=2
 skipEvents_=0#
 #outputFile_='MLAnal_PhaseI_TTbar_13TeVu_trackRefitter.root'
 #outputFile_='GJet.root'

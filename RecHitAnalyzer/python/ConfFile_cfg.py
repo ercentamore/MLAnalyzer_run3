@@ -38,6 +38,8 @@ process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
 process.TrackRefitter.TTRHBuilder = 'WithAngleAndTemplate'
+process.MeasurementTrackerEvent.inactivePixelDetectorLabels = cms.VInputTag() # to prebent worning:  fail to get the list of inactive pixel modules, because of 4.2/4.4 event content change. 
+
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(options.maxEvents)
