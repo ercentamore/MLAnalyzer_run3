@@ -51,6 +51,8 @@ void RecHitAnalyzer::branchesEvtSel_jet ( TTree* tree, edm::Service<TFileService
     branchesEvtSel_jet_dijet_ditau_h2aa4Tau( tree, fs );
   } else if ( task_ == "dijet_tau_massregression" ) {
     branchesEvtSel_jet_dijet_tau_massregression( tree, fs );
+  } else if ( task_ == "dijet_tau_massregression_unphysical" ) {
+    branchesEvtSel_jet_dijet_tau_massregression_unphysical( tree, fs );
   } else if ( task_ == "dijet_ele_massregression" ) {
     branchesEvtSel_jet_dijet_ele_massregression( tree, fs );
   } else if ( task_ == "jet_ele_classification" ) {
@@ -132,6 +134,9 @@ bool RecHitAnalyzer::runEvtSel_jet ( const edm::Event& iEvent, const edm::EventS
     if ( debug && hasPassed ) std::cout << "!!!!!!   JET SELECTION HAS PASSED! " << std::endl;
   } else if ( task_ == "dijet_tau_massregression" ) {
     hasPassed = runEvtSel_jet_dijet_tau_massregression( iEvent, iSetup );
+    if ( debug && hasPassed ) std::cout << "!!!!!!   JET SELECTION HAS PASSED! " << std::endl;
+  } else if ( task_ == "dijet_tau_massregression_unphysical" ) {
+    hasPassed = runEvtSel_jet_dijet_tau_massregression_unphysical( iEvent, iSetup );
     if ( debug && hasPassed ) std::cout << "!!!!!!   JET SELECTION HAS PASSED! " << std::endl;
   } else if ( task_ == "dijet_ele_massregression" ) {
     hasPassed = runEvtSel_jet_dijet_ele_massregression( iEvent, iSetup );
@@ -296,6 +301,8 @@ bool RecHitAnalyzer::runEvtSel_jet ( const edm::Event& iEvent, const edm::EventS
     fillEvtSel_jet_dijet_ditau_h2aa4Tau( iEvent, iSetup );
   } else if ( task_ == "dijet_tau_massregression" ) {
     fillEvtSel_jet_dijet_tau_massregression( iEvent, iSetup );
+  } else if ( task_ == "dijet_tau_massregression_unphysical" ) {
+    fillEvtSel_jet_dijet_tau_massregression_unphysical( iEvent, iSetup );
   } else if ( task_ == "dijet_ele_massregression" ) {
     fillEvtSel_jet_dijet_ele_massregression( iEvent, iSetup );
   } else if ( task_ == "jet_ele_classification" ) {
