@@ -19,9 +19,9 @@ fevt = cms.EDAnalyzer('RecHitAnalyzer'
     , isBoostedTop                   = cms.bool(False)
 
     #, tracks = cms.untracked.InputTag('ctfWithMaterialTracks')
-    #, EBRecHitCollection             = cms.InputTag('ecalRecHit:EcalRecHitsEB')
+    # , EBRecHitCollection             = cms.InputTag('ecalRecHit:EcalRecHitsEB')
     , reducedEBRecHitCollection      = cms.InputTag('reducedEcalRecHitsEB')
-    #, EERecHitCollection             = cms.InputTag('ecalRecHit:EcalRecHitsEE')
+    # , EERecHitCollection             = cms.InputTag('ecalRecHit:EcalRecHitsEE')
     , reducedEERecHitCollection      = cms.InputTag('reducedEcalRecHitsEE')
     #, EBDigiCollection               = cms.InputTag('simEcalDigis:ebDigis')
     #, selectedEBDigiCollection       = cms.InputTag('selectDigi:selectedEcalEBDigiCollection')
@@ -53,12 +53,12 @@ fevt = cms.EDAnalyzer('RecHitAnalyzer'
     # , tauMVAIsolationLoose           = cms.InputTag("hpsPFTauDiscriminationByLooseIsolationMVArun2v1DBoldDMwLT")
     # # , tauMVAIsolationLoose           = cms.InputTag("hpsPFTauDiscriminationByVLooseIsolationMVArun2v1DBnewDMwLT")
     # , tauMVAIsolationTight           = cms.InputTag("hpsPFTauDiscriminationByTightIsolationMVArun2v1DBoldDMwLT")
-    , tauMVAIsolationRaw             = cms.InputTag("hpsPFTauDiscriminationByIsolationMVArun2v1DBoldDMwLTraw")
+    # , tauMVAIsolationRaw             = cms.InputTag("hpsPFTauDiscriminationByIsolationMVArun2v1DBoldDMwLTraw")
     # # , tauMVAIsolationRaw             = cms.InputTag("hpsPFTauDiscriminationByIsolationMVArun2v1DBnewDMwLTraw")
     # , tauMuonRejectionLoose          = cms.InputTag("hpsPFTauDiscriminationByLooseMuonRejection3")
     # , tauElectronRejectionMVA6Loose  = cms.InputTag("hpsPFTauDiscriminationByMVA6LooseElectronRejection")
     # , tauElectronRejectionMVA6VLoose = cms.InputTag("hpsPFTauDiscriminationByMVA6VLooseElectronRejection")
-    , tauDecayMode                   = cms.InputTag("hpsPFTauDiscriminationByDecayModeFinding")
+    # , tauDecayMode                   = cms.InputTag("hpsPFTauDiscriminationByDecayModeFinding")
     # # , tauDecayMode                   = cms.InputTag("hpsPFTauDiscriminationByDecayModeFindingOldDMs")
 
     # , boostedHPSPFTausTask           = cms.InputTag("boostedHPSPFTausTask")
@@ -76,15 +76,12 @@ fevt = cms.EDAnalyzer('RecHitAnalyzer'
     , transTrackBuilder              = cms.ESInputTag("", "TransientTrackBuilder")
 
     # Jet level cfg
-    , nJets     = cms.int32(-1)
-    , minJetPt  = cms.double(20.)
-    , maxJetEta = cms.double(2.4)
-    , z0PVCut   = cms.double(0.1)
+    , pho_min_pT  = cms.double(5.)
 
     # MET parameter
     , parameters = METSignificanceParams
 
     #granularity multiplier wrt ECAL maps for tracker and tracking RH images
-    , granularityMultiPhi = cms.int32(5)
-    , granularityMultiEta = cms.int32(5)
+    # , granularityMultiPhi = cms.int32(5)
+    # , granularityMultiEta = cms.int32(5)
     )
