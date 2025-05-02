@@ -39,7 +39,7 @@ RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
   //EERecHitCollectionT_    = consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("EERecHitCollection"));
   HBHERecHitCollectionT_  = consumes<HBHERecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedHBHERecHitCollection"));
   TRKRecHitCollectionT_   = consumes<TrackingRecHitCollection>(iConfig.getParameter<edm::InputTag>("trackRecHitCollection"));
-
+  
   if(isMC_){
   	genParticleCollectionT_ = consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticleCollection"));
   }
@@ -74,13 +74,14 @@ RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
 
   tauCollectionT_           = consumes<reco::PFTauCollection>(iConfig.getParameter<edm::InputTag>("tauCollection"));
   tauDecayMode_             = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauDecayMode"));
-  // tauMVAIsolation_          = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMVAIsolationRaw"));
-  // tauMuonRejection_         = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMuonRejectionLoose"));
-  // tauElectronRejectionMVA6_ = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauElectronRejectionMVA6VLoose"));
+  tauMVAIsolation_          = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMVAIsolationRaw"));
+  tauMuonRejection_         = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMuonRejectionLoose"));
+  tauElectronRejectionMVA6_ = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauElectronRejectionMVA6VLoose"));
 
   // boostedHPSPFTausTask_ = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("boostedHPSPFTausTask"));
 
   eleCollectionT_           = consumes<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("eleCollection"));
+  muonCollectionT_          = consumes<reco::MuonCollection>(iConfig.getParameter<edm::InputTag>("muonCollection"));
 
   processName_              = iConfig.getUntrackedParameter<std::string>("processName","HLT");
   //triggerResultsToken_      = consumes<edm::TriggerResults> (iConfig.getUntrackedParameter<edm::InputTag>("triggerResultsTag", edm::InputTag("TriggerResults", "", "HLT")));
