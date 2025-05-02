@@ -132,7 +132,7 @@ void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent,
   edm::Handle<reco::GenParticleCollection> genParticles;
   iEvent.getByToken(genParticleCollectionT_, genParticles);
 
-  edm::Handle<reco::Photon> photons;
+  edm::Vector<reco::Photon> photons;
   iEvent.getByToken(photonCollectionT_, photons);
 
   //edm::Handle<PhotonCollection> photons;

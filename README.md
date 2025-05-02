@@ -4,8 +4,6 @@ export SCRAM_ARCH=el8_amd64_gcc11
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 
-cmsrel CMSSW_13_0_13
-
 cd CMSSW_13_0_13/src
 
 eval `scram runtime -sh`
