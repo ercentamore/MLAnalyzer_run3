@@ -71,6 +71,7 @@ bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, 
 
   vAs_diphoton.clear();
   vAs_ditau.clear();
+  vPhotons.clear();
  
   ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > vH;
 
@@ -82,21 +83,20 @@ bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, 
     if ( abs(iGen->daughter(0)->pdgId()) == 22 || abs(iGen->daughter(1)->pdgId()) == 22 ) {
       if ( debug ) std::cout<<"*****************************************************"<< std::endl;
       if ( debug ) std::cout<< "iG:" << iG << " ID:" << iGen->pdgId() << " A->diphoton mass:" << iGen->mass() << std::endl;
-      gen_obj Gen_obj = { iG, std::abs(iGen->pt()) };
-      vAs_diphoton.push_back( Gen_obj );
+      vAs_diphoton.push_back( iG );
       vH += iGen->p4();
 
     } else if ( abs(iGen->daughter(0)->pdgId()) == 15 || abs(iGen->daughter(1)->pdgId()) == 15 ) {
       if ( debug ) std::cout<<"*****************************************************"<< std::endl;
       if ( debug ) std::cout<< "iG:" << iG << " ID:" << iGen->pdgId() << " A->ditau mass:" << iGen->mass() << std::endl;
       gen_obj Gen_obj = { iG, std::abs(iGen->pt()) };
-      vAs_ditau.push_back( Gen_obj );
+      vAs_ditau.push_back( iG );
       vH += iGen->p4();
     } else continue;
 
   }
 
-  if ( vAs_diphoton.size() != 1 || vAs_tau.size() != 1) return false;
+  if ( vAs_diphoton.size() != 1 || vAs_ditau.size() != 1) return false;
 
   vGen_As_ditau_Idxs.clear();
   vGen_As_diphoton_Idxs.clear();
@@ -104,7 +104,8 @@ bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, 
   if ( debug ) std::cout << " >> pT:" << iGen->pt() << " eta:" << iGen->eta() << " phi: " << iGen->phi() << " E:" << iGen->energy() << std::endl;
 
   vPhotons.clear()
-  for (auto iP = photons->begin(); iP != photons->end(); ++iP) {
+  for (unsigned int iP = 0; iP < photons->size(); iP++) {
+    reco::PhotonRef iP( photons, iP)
     if ( iP->pt() > pho_min_pT) && ( reco::deltaR( iP->eta(), iP->phi(), iGen->eta(), iGen->phi() ) < .4 ) {
       vPhotons.push_back( iP )
     }
@@ -157,7 +158,8 @@ void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent,
   vA_ditau_gen_m0_.clear();
   vA_ditau_gen_dR_.clear();
 
-  vA_photons_.clear()
+  vAs_diphoton.clear()
+  vAs_ditau.clear()
 
   for ( unsigned int iG : vGen_As_ditau_Idxs ) {
 
