@@ -89,7 +89,6 @@ bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, 
     } else if ( abs(iGen->daughter(0)->pdgId()) == 15 || abs(iGen->daughter(1)->pdgId()) == 15 ) {
       if ( debug ) std::cout<<"*****************************************************"<< std::endl;
       if ( debug ) std::cout<< "iG:" << iG << " ID:" << iGen->pdgId() << " A->ditau mass:" << iGen->mass() << std::endl;
-      gen_obj Gen_obj = { iG, std::abs(iGen->pt()) };
       vAs_ditau.push_back( iG );
       vH += iGen->p4();
     } else continue;
@@ -106,9 +105,9 @@ bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, 
   vPhotons.clear();
   for (unsigned int iP = 0; iP < photons->size(); iP++) {
     reco::PhotonRef iPho( photons, iP)
-    if ( iPho->pt() > pho_min_pT) && ( reco::deltaR( iPho->eta(), iPho->phi(), iGenA1->eta(), iGenA1->phi() ) < .4 ) {
+    if (( iPho->pt() > pho_min_pT) && ( reco::deltaR( iPho->eta(), iPho->phi(), iGenA1->eta(), iGenA1->phi() ) < .4 )) {
       vPhotons.push_back( iPho );
-    }
+    } else continue;
   };
   
   if (vPhotons.size() != 2) return false;
