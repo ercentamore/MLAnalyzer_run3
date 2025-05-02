@@ -356,7 +356,7 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     void branchesEvtSel_jet_dijet_top( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_dijet_ditau( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_dijet_ditau_h2aa4Tau( TTree*, edm::Service<TFileService>& );
-    void branchesEvtSel_jet_dijet_ditau_h2aa2ditau_dipho( TTree*, edm::Service<TFileService>& );
+    void branchesEvtSel_jet_h2aa2ditau_dipho( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_dijet_tau_massregression( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_dijet_tau_massregression_unphysical( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_dijet_ele_massregression( TTree*, edm::Service<TFileService>& );
@@ -370,7 +370,7 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     bool runEvtSel_jet_dijet_top( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_dijet_ditau( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_dijet_ditau_h2aa4Tau( const edm::Event&, const edm::EventSetup& );
-    bool runEvtSel_jet_dijet_ditau_h2aa2ditau_dipho( const edm::Event&, const edm::EventSetup& );
+    bool runEvtSel_jet_h2aa2ditau_dipho( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_dijet_tau_massregression( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_dijet_tau_massregression_unphysical( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_dijet_ele_massregression( const edm::Event&, const edm::EventSetup& );
@@ -384,7 +384,7 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     void fillEvtSel_jet_dijet_top( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_dijet_ditau( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_dijet_ditau_h2aa4Tau( const edm::Event&, const edm::EventSetup& );
-    void fillEvtSel_jet_dijet_ditau_h2aa2ditau_dipho( const edm::Event&, const edm::EventSetup& );
+    void fillEvtSel_jet_h2aa2ditau_dipho( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_dijet_tau_massregression( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_dijet_tau_massregression_unphysical( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_dijet_ele_massregression( const edm::Event&, const edm::EventSetup& );
