@@ -191,7 +191,7 @@ void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent,
 
     ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double>> diphoton_A;
 
-    diphoton_A = Photon1->p4() + Photon2->p4()
+    diphoton_A = Photon1->p4() + Photon2->p4();
 
     vA_diphoton_reco_E_.push_back( std::abs(diphoton_A->energy()) );
     vA_diphoton_reco_pT_.push_back( std::abs(diphoton_A->pt()) );
