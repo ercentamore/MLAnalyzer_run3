@@ -186,8 +186,8 @@ void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent,
 
   for ( unsigned int iP = 0; iP < vReco_First_Photons_Idxs->size(); iP++ ) {
 
-    reco::Photon Photon1( photons, vReco_First_Photons_Idxs[iP] );
-    reco::Photon Photon2( photons, vReco_Second_Photons_Idxs[iP] );
+    reco::PhotonRef Photon1( photons, vReco_First_Photons_Idxs[iP] );
+    reco::PhotonRef Photon2( photons, vReco_Second_Photons_Idxs[iP] );
 
     ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double>> diphoton_A;
 
