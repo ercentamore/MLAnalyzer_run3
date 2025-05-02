@@ -184,21 +184,24 @@ void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent,
     vA_diphoton_gen_dR_.push_back( reco::deltaR(iGen->daughter(0)->eta(),iGen->daughter(0)->phi(), iGen->daughter(1)->eta(),iGen->daughter(1)->phi()) );
   }
 
-  for ( unsigned int iP = 0; iP < vReco_First_Photons_Idxs->size(); iP++ ) {
-
-    reco::PhotonRef Photon1( photons, vReco_First_Photons_Idxs[iP] );
-    reco::PhotonRef Photon2( photons, vReco_Second_Photons_Idxs[iP] );
-
-    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double>> diphoton_A;
-
-    diphoton_A = Photon1->p4() + Photon2->p4();
-
-    vA_diphoton_reco_E_.push_back( std::abs(diphoton_A->energy()) );
-    vA_diphoton_reco_pT_.push_back( std::abs(diphoton_A->pt()) );
-    vA_diphoton_reco_eta_.push_back( diphoton_A->eta() );
-    vA_diphoton_reco_phi_.push_back( diphoton_A->phi() );
-    vA_diphoton_reco_M_.push_back( diphoton_A->mass() );
-    vA_diphoton_reco_dR_.push_back( reco::deltaR(Photon1->eta(), Photon1->phi(), Photon2->eta(), Photon2->phi()) );
+  for ( unsigned int iP = 0; iP < vReco_First_Photons_Idxs.size(); ++iP ) {
+    unsigned int idx1 = vReco_First_Photons_Idxs[iP];
+    unsigned int idx2 = vReco_Second_Photons_Idxs[iP];
+  
+    reco::PhotonRef photon1( photons, idx1 );
+    reco::PhotonRef photon2( photons, idx2 );
+  
+    auto diphoton_A = photon1->p4() + photon2->p4();
+  
+    vA_diphoton_reco_E_ .push_back( std::abs(diphoton_A.energy()) );
+    vA_diphoton_reco_pT_.push_back( std::abs(diphoton_A.pt())     );
+    vA_diphoton_reco_eta_.push_back( diphoton_A.eta()             );
+    vA_diphoton_reco_phi_.push_back( diphoton_A.phi()             );
+    vA_diphoton_reco_M_ .push_back( diphoton_A.mass()            );
+    vA_diphoton_reco_dR_.push_back(
+      reco::deltaR(photon1->eta(), photon1->phi(),
+                    photon2->eta(), photon2->phi())
+    );
   }
 
 }
