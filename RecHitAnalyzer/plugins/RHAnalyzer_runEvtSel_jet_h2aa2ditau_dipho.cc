@@ -104,7 +104,7 @@ bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, 
 
   vPhotons.clear();
   for (unsigned int iP = 0; iP < photons->size(); iP++) {
-    reco::PhotonRef iPho( photons, iP)
+    reco::PhotonRef iPho( photons, iP);
     if (( iPho->pt() > pho_min_pT) && ( reco::deltaR( iPho->eta(), iPho->phi(), iGenA1->eta(), iGenA1->phi() ) < .4 )) {
       vPhotons.push_back( iPho );
     } else continue;
