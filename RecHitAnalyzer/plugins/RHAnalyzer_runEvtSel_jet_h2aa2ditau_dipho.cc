@@ -105,9 +105,9 @@ bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, 
 
   vPhotons.clear()
   for (unsigned int iP = 0; iP < photons->size(); iP++) {
-    reco::PhotonRef iP( photons, iP)
-    if ( iP->pt() > pho_min_pT) && ( reco::deltaR( iP->eta(), iP->phi(), iGen->eta(), iGen->phi() ) < .4 ) {
-      vPhotons.push_back( iP )
+    reco::PhotonRef iPho( photons, iP)
+    if ( iPho->pt() > pho_min_pT) && ( reco::deltaR( iPho->eta(), iPho->phi(), iGen->eta(), iGen->phi() ) < .4 ) {
+      vPhotons.push_back( iPho )
     }
   };
   
@@ -132,7 +132,7 @@ void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent,
   edm::Handle<reco::GenParticleCollection> genParticles;
   iEvent.getByToken(genParticleCollectionT_, genParticles);
 
-  std::Vector<reco::Photon> photons;
+  edm::Handle<reco::Photon> photons;
   iEvent.getByToken(photonCollectionT_, photons);
 
   //edm::Handle<PhotonCollection> photons;
@@ -158,8 +158,8 @@ void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent,
   vA_ditau_gen_m0_.clear();
   vA_ditau_gen_dR_.clear();
 
-  vAs_diphoton.clear()
-  vAs_ditau.clear()
+  vAs_diphoton.clear();
+  vAs_ditau.clear();
 
   for ( unsigned int iG : vGen_As_ditau_Idxs ) {
 
