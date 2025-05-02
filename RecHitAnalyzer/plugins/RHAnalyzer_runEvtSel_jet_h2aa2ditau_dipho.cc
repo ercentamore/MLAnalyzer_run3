@@ -33,165 +33,146 @@ std::vector<float> vA_ditau_gen_pT_;
 std::vector<float> vA_ditau_gen_eta_;
 std::vector<float> vA_ditau_gen_phi_;
 
-// Initialize branches _____________________________________________________//
-void RecHitAnalyzer::branchesEvtSel_jet_h2aa2ditau_dipho ( TTree* tree, edm::Service<TFileService> &fs )
-{
-  tree->Branch("A_diphoton_gen_m0",         &vA_diphoton_gen_m0_);
-  tree->Branch("A_diphoton_gen_dR",         &vA_diphoton_gen_dR_);
-  tree->Branch("A_diphoton_gen_E",           &vA_diphoton_gen_E_);
-  tree->Branch("A_diphoton_gen_pT",         &vA_diphoton_gen_pT_);
-  tree->Branch("A_diphoton_gen_eta",       &vA_diphoton_gen_eta_);
-  tree->Branch("A_diphoton_gen_phi",       &vA_diphoton_gen_phi_);
-  tree->Branch("A_diphoton_reco_M",         &vA_diphoton_reco_M_);
-  tree->Branch("A_diphoton_reco_dR",       &vA_diphoton_reco_dR_);
-  tree->Branch("A_diphoton_reco_E",         &vA_diphoton_reco_E_);
-  tree->Branch("A_diphoton_reco_pT",       &vA_diphoton_reco_pT_);
-  tree->Branch("A_diphoton_reco_eta",     &vA_diphoton_reco_eta_);
-  tree->Branch("A_diphoton_reco_phi",     &vA_diphoton_reco_phi_);
+// --- branches setup ---
+void RecHitAnalyzer::branchesEvtSel_jet_h2aa2ditau_dipho(TTree* tree, edm::Service<TFileService>& fs) {
+  tree->Branch("A_diphoton_gen_m0", &vA_diphoton_gen_m0_);
+  tree->Branch("A_diphoton_gen_dR", &vA_diphoton_gen_dR_);
+  tree->Branch("A_diphoton_gen_E", &vA_diphoton_gen_E_);
+  tree->Branch("A_diphoton_gen_pT", &vA_diphoton_gen_pT_);
+  tree->Branch("A_diphoton_gen_eta", &vA_diphoton_gen_eta_);
+  tree->Branch("A_diphoton_gen_phi", &vA_diphoton_gen_phi_);
+  tree->Branch("A_diphoton_reco_M", &vA_diphoton_reco_M_);
+  tree->Branch("A_diphoton_reco_dR", &vA_diphoton_reco_dR_);
+  tree->Branch("A_diphoton_reco_E", &vA_diphoton_reco_E_);
+  tree->Branch("A_diphoton_reco_pT", &vA_diphoton_reco_pT_);
+  tree->Branch("A_diphoton_reco_eta", &vA_diphoton_reco_eta_);
+  tree->Branch("A_diphoton_reco_phi", &vA_diphoton_reco_phi_);
 
-  tree->Branch("A_ditau_gen_m0",        &vA_ditau_gen_m0_);
-  tree->Branch("A_ditau_gen_dR",        &vA_ditau_gen_dR_);
-  tree->Branch("A_ditau_gen_E",          &vA_ditau_gen_E_);
-  tree->Branch("A_ditau_gen_pT",        &vA_ditau_gen_pT_);
-  tree->Branch("A_ditau_gen_eta",      &vA_ditau_gen_eta_);
-  tree->Branch("A_ditau_gen_phi",      &vA_ditau_gen_phi_);
+  tree->Branch("A_ditau_gen_m0", &vA_ditau_gen_m0_);
+  tree->Branch("A_ditau_gen_dR", &vA_ditau_gen_dR_);
+  tree->Branch("A_ditau_gen_E", &vA_ditau_gen_E_);
+  tree->Branch("A_ditau_gen_pT", &vA_ditau_gen_pT_);
+  tree->Branch("A_ditau_gen_eta", &vA_ditau_gen_eta_);
+  tree->Branch("A_ditau_gen_phi", &vA_ditau_gen_phi_);
 }
 
-// Run event selection ___________________________________________________________________//
-bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, const edm::EventSetup& iSetup ) {
-  edm::Handle<reco::GenParticleCollection> genParticles;
+// --- event selection ---
+bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+  using GenPartColl = reco::GenParticleCollection;
+  edm::Handle<GenPartColl> genParticles;
   iEvent.getByToken(genParticleCollectionT_, genParticles);
+
+  edm::Handle<pat::PhotonCollection> photons;
+  iEvent.getByToken(photonCollectionT_, photons);
 
   vAs_diphoton.clear();
   vAs_ditau.clear();
- 
-  ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > vH;
+  ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double>> vH(0,0,0,0);
 
-  for ( unsigned int iG = 0; iG < genParticles->size(); iG++ ) {
-
-    reco::GenParticleRef iGen( genParticles, iG );
-    if ( std::abs(iGen->pdgId()) != 25 ||  std::abs(iGen->pdgId()) != 26) continue;
-    if ( iGen->numberOfDaughters() != 2 ) continue;
-    if ( abs(iGen->daughter(0)->pdgId()) == 22 || abs(iGen->daughter(1)->pdgId()) == 22 ) {
-      if ( debug ) std::cout<<"*****************************************************"<< std::endl;
-      if ( debug ) std::cout<< "iG:" << iG << " ID:" << iGen->pdgId() << " A->diphoton mass:" << iGen->mass() << std::endl;
-      gen_obj Gen_obj = { iG, std::abs(iGen->pt()) };
-      vAs_diphoton.push_back( Gen_obj );
-      vH += iGen->p4();
-
-    } else if ( abs(iGen->daughter(0)->pdgId()) == 15 || abs(iGen->daughter(1)->pdgId()) == 15 ) {
-      if ( debug ) std::cout<<"*****************************************************"<< std::endl;
-      if ( debug ) std::cout<< "iG:" << iG << " ID:" << iGen->pdgId() << " A->ditau mass:" << iGen->mass() << std::endl;
-      gen_obj Gen_obj = { iG, std::abs(iGen->pt()) };
-      vAs_ditau.push_back( Gen_obj );
-      vH += iGen->p4();
-    } else continue;
-
+  // find gen A->diphoton or A->ditau
+  for (unsigned int iG = 0; iG < genParticles->size(); ++iG) {
+      const auto& gen = genParticles->at(iG);
+      int id = std::abs(gen.pdgId());
+      if (id != 25 && id != 26) continue;
+      if (gen.numberOfDaughters() != 2) continue;
+      int dau0 = std::abs(gen.daughter(0)->pdgId());
+      int dau1 = std::abs(gen.daughter(1)->pdgId());
+      if (dau0 == 22 && dau1 == 22) {
+          if (debug) std::cout << "Found A->#gamma#gamma idx=" << iG << " m=" << gen.mass() << std::endl;
+          vAs_diphoton.push_back({iG, gen.pt()});
+          vH += gen.p4();
+      } else if (dau0 == 15 && dau1 == 15) {
+          if (debug) std::cout << "Found A->#tau#tau idx=" << iG << " m=" << gen.mass() << std::endl;
+          vAs_ditau.push_back({iG, gen.pt()});
+          vH += gen.p4();
+      }
   }
 
-  if ( vAs_diphoton.size() != 1 || vAs_tau.size() != 1) return false;
+  // require exactly one of each
+  if (vAs_diphoton.size() != 1 || vAs_ditau.size() != 1) return false;
 
-  vGen_As_ditau_Idxs.clear();
+  // record gen indices
   vGen_As_diphoton_Idxs.clear();
-  reco::GenParticleRef iGen( genParticles, vAs_ditau[0] );
-  if ( debug ) std::cout << " >> pT:" << iGen->pt() << " eta:" << iGen->eta() << " phi: " << iGen->phi() << " E:" << iGen->energy() << std::endl;
+  vGen_As_ditau_Idxs.clear();
+  vGen_As_diphoton_Idxs.push_back(vAs_diphoton[0].idx);
+  vGen_As_ditau_Idxs.push_back(vAs_ditau[0].idx);
 
-  vPhotons.clear()
-  for (auto iP = photons->begin(); iP != photons->end(); ++iP) {
-    if ( iP->pt() > pho_min_pT) && ( reco::deltaR( iP->eta(), iP->phi(), iGen->eta(), iGen->phi() ) < .4 ) {
-      vPhotons.push_back( iP )
-    }
-  };
-  
-  if vPhotons.size() != 2; return false;
-  
-  vReco_First_Photons_Idxs.push_back( vPhotons[0] );
-  vReco_Second_Photons_Idxs.push_back( vPhotons[1] );
+  // select reco photons near the ditau gen
+  const auto& tauGen = genParticles->at(vAs_ditau[0].idx);
+  double refEta = tauGen.eta(), refPhi = tauGen.phi();
+  vPhotons.clear();
+  for (unsigned int ip = 0; ip < photons->size(); ++ip) {
+      const auto& ph = photons->at(ip);
+      if (ph.pt() > pho_min_pT && reco::deltaR(ph.eta(), ph.phi(), refEta, refPhi) < 0.4) {
+          vPhotons.push_back(ip);
+      }
+  }
+  if (vPhotons.size() != 2) return false;
 
-
-  vGen_As_ditau_Idxs.push_back( vAs_ditau[0] );
-  reco::GenParticleRef iGen( genParticles, vAs_diphoton[0] );
-  if ( debug ) std::cout << " >> pT:" << iGen->pt() << " eta:" << iGen->eta() << " phi: " << iGen->phi() << " E:" << iGen->energy() << std::endl;
-  vGen_As_diphoton_Idxs.push_back( vAs_diphoton[0] );
+  vReco_First_Photons_Idxs.clear();
+  vReco_Second_Photons_Idxs.clear();
+  vReco_First_Photons_Idxs.push_back(vPhotons[0]);
+  vReco_Second_Photons_Idxs.push_back(vPhotons[1]);
 
   return true;
 }
 
-// Fill branches ___________________________________________________________________//
-void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, const edm::EventSetup& iSetup )
-{
-
-  edm::Handle<reco::GenParticleCollection> genParticles;
+// --- fill branches ---
+void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+  using GenPartColl = reco::GenParticleCollection;
+  edm::Handle<GenPartColl> genParticles;
   iEvent.getByToken(genParticleCollectionT_, genParticles);
 
-  edm::Handle<reco::Photon> photons;
+  edm::Handle<pat::PhotonCollection> photons;
   iEvent.getByToken(photonCollectionT_, photons);
 
-  //edm::Handle<PhotonCollection> photons;
-  //iEvent.getByToken(photonCollectionT_, photons);
+  // clear all branch vectors
+  vA_diphoton_gen_m0_.clear(); vA_diphoton_gen_dR_.clear(); vA_diphoton_gen_E_.clear();
+  vA_diphoton_gen_pT_.clear(); vA_diphoton_gen_eta_.clear(); vA_diphoton_gen_phi_.clear();
+  vA_diphoton_reco_M_.clear(); vA_diphoton_reco_dR_.clear(); vA_diphoton_reco_E_.clear();
+  vA_diphoton_reco_pT_.clear(); vA_diphoton_reco_eta_.clear(); vA_diphoton_reco_phi_.clear();
+  vA_ditau_gen_m0_.clear(); vA_ditau_gen_dR_.clear(); vA_ditau_gen_E_.clear();
+  vA_ditau_gen_pT_.clear(); vA_ditau_gen_eta_.clear(); vA_ditau_gen_phi_.clear();
 
-  vA_diphoton_gen_m0_.clear();
-  vA_diphoton_gen_dR_.clear();
-  vA_diphoton_gen_E_.clear();
-  vA_diphoton_gen_pT_.clear();
-  vA_diphoton_gen_eta_.clear();
-  vA_diphoton_gen_phi_.clear();
-  vA_diphoton_reco_M_.clear();
-  vA_diphoton_reco_dR_.clear();
-  vA_diphoton_reco_E_.clear();
-  vA_diphoton_reco_pT_.clear();
-  vA_diphoton_reco_eta_.clear();
-  vA_diphoton_reco_phi_.clear();
-
-  vA_ditau_gen_E_.clear();
-  vA_ditau_gen_pT_.clear();
-  vA_ditau_gen_eta_.clear();
-  vA_ditau_gen_phi_.clear();
-  vA_ditau_gen_m0_.clear();
-  vA_ditau_gen_dR_.clear();
-
-  vA_photons_.clear()
-
-  for ( unsigned int iG : vGen_As_ditau_Idxs ) {
-
-    reco::GenParticleRef iGen( genParticles, iG );
-
-    vA_ditau_gen_E_.push_back( std::abs(iGen->energy()) );
-    vA_ditau_gen_pT_.push_back( std::abs(iGen->pt()) );
-    vA_ditau_gen_eta_.push_back( iGen->eta() );
-    vA_ditau_gen_phi_.push_back( iGen->phi() );
-    vA_ditau_gen_m0_.push_back( iGen->mass() );
-    vA_ditau_gen_dR_.push_back( reco::deltaR(iGen->daughter(0)->eta(),iGen->daughter(0)->phi(), iGen->daughter(1)->eta(),iGen->daughter(1)->phi()) );
-
+  // fill ditau gen
+  for (auto idx : vGen_As_ditau_Idxs) {
+      const auto& gen = genParticles->at(idx);
+      vA_ditau_gen_E_.push_back(gen.energy());
+      vA_ditau_gen_pT_.push_back(gen.pt());
+      vA_ditau_gen_eta_.push_back(gen.eta());
+      vA_ditau_gen_phi_.push_back(gen.phi());
+      vA_ditau_gen_m0_.push_back(gen.mass());
+      vA_ditau_gen_dR_.push_back(
+          reco::deltaR(gen.daughter(0)->eta(), gen.daughter(0)->phi(),
+                       gen.daughter(1)->eta(), gen.daughter(1)->phi()));
   }
 
-  for ( unsigned int iG : vGen_As_diphoton_Idxs ) {
-
-    reco::GenParticleRef iGen( genParticles, iG );
-
-    vA_diphoton_gen_E_.push_back( std::abs(iGen->energy()) );
-    vA_diphoton_gen_pT_.push_back( std::abs(iGen->pt()) );
-    vA_diphoton_gen_eta_.push_back( iGen->eta() );
-    vA_diphoton_gen_phi_.push_back( iGen->phi() );
-    vA_diphoton_gen_m0_.push_back( iGen->mass() );
-    vA_diphoton_gen_dR_.push_back( reco::deltaR(iGen->daughter(0)->eta(),iGen->daughter(0)->phi(), iGen->daughter(1)->eta(),iGen->daughter(1)->phi()) );
+  // fill diphoton gen
+  for (auto idx : vGen_As_diphoton_Idxs) {
+      const auto& gen = genParticles->at(idx);
+      vA_diphoton_gen_E_.push_back(gen.energy());
+      vA_diphoton_gen_pT_.push_back(gen.pt());
+      vA_diphoton_gen_eta_.push_back(gen.eta());
+      vA_diphoton_gen_phi_.push_back(gen.phi());
+      vA_diphoton_gen_m0_.push_back(gen.mass());
+      vA_diphoton_gen_dR_.push_back(
+          reco::deltaR(gen.daughter(0)->eta(), gen.daughter(0)->phi(),
+                       gen.daughter(1)->eta(), gen.daughter(1)->phi()));
   }
 
-  for ( unsigned int iP = 0; iP < vReco_First_Photons_Idxs->size(); iP++ ) {
-
-    reco::PATObject Photon1( photons, vReco_First_Photons_Idxs[iP] );
-    reco::PATObject Photon2( photons, vReco_Second_Photons_Idxs[iP] );
-
-    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double>> diphoton_A;
-
-    diphoton_A = Photon1->p4() + Photon2->p4()
-
-    vA_diphoton_reco_E_.push_back( std::abs(diphoton_A->energy()) );
-    vA_diphoton_reco_pT_.push_back( std::abs(diphoton_A->pt()) );
-    vA_diphoton_reco_eta_.push_back( diphoton_A->eta() );
-    vA_diphoton_reco_phi_.push_back( diphoton_A->phi() );
-    vA_diphoton_reco_M_.push_back( diphoton_A->mass() );
-    vA_diphoton_reco_dR_.push_back( reco::deltaR(Photon1->eta(), Photon1->phi(), Photon2->eta(), Photon2->phi()) );
+  // fill reconstructed diphoton
+  for (size_t i = 0; i < vReco_First_Photons_Idxs.size(); ++i) {
+      unsigned ip1 = vReco_First_Photons_Idxs[i];
+      unsigned ip2 = vReco_Second_Photons_Idxs[i];
+      const auto& ph1 = photons->at(ip1);
+      const auto& ph2 = photons->at(ip2);
+      auto diphoton = ph1.p4() + ph2.p4();
+      vA_diphoton_reco_E_.push_back(diphoton.E());
+      vA_diphoton_reco_pT_.push_back(diphoton.Pt());
+      vA_diphoton_reco_eta_.push_back(diphoton.eta());
+      vA_diphoton_reco_phi_.push_back(diphoton.phi());
+      vA_diphoton_reco_M_.push_back(diphoton.M());
+      vA_diphoton_reco_dR_.push_back(
+          reco::deltaR(ph1.eta(), ph1.phi(), ph2.eta(), ph2.phi()));
   }
-
 }
