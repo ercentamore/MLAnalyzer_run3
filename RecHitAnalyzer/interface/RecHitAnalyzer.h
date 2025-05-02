@@ -2,10 +2,10 @@
 #define RecHitAnalyzer_h
 // -*- C++ -*-
 //
-// Package:    MLAnalyzerRun3/RecHitAnalyzer
+// Package:    MLAnalyzer_run3/RecHitAnalyzer
 // Class:      RecHitAnalyzer
 //
-/**\class RecHitAnalyzer RecHitAnalyzer.cc MLAnalyzerRun3/RecHitAnalyzer/plugins/RecHitAnalyzer.cc
+/**\class RecHitAnalyzer RecHitAnalyzer.cc MLAnalyzer_run3/RecHitAnalyzer/plugins/RecHitAnalyzer.cc
 
  Description: [one line class summary]
 
