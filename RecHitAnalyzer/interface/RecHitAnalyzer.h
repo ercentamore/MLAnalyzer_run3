@@ -2,10 +2,10 @@
 #define RecHitAnalyzer_h
 // -*- C++ -*-
 //
-// Package:    MLAnalyzer/RecHitAnalyzer
+// Package:    MLAnalyzerRun3/RecHitAnalyzer
 // Class:      RecHitAnalyzer
 //
-/**\class RecHitAnalyzer RecHitAnalyzer.cc MLAnalyzer/RecHitAnalyzer/plugins/RecHitAnalyzer.cc
+/**\class RecHitAnalyzer RecHitAnalyzer.cc MLAnalyzerRun3/RecHitAnalyzer/plugins/RecHitAnalyzer.cc
 
  Description: [one line class summary]
 
@@ -13,8 +13,8 @@
      [Notes on implementation]
 */
 //
-// Original Author:  Bhim Bam
-//         Created:  Mon, 16 Sep 2024 19:40:09 GMT
+// Original Author:  Ruchi Chudasama
+//         Created:  Tue, 05 Sep 2024 05:47:13 GMT
 //
 //
 
@@ -146,8 +146,8 @@
 #include "TauAnalysis/ClassicSVfit/interface/FastMTT.h"
 
 #include "JetMETCorrections/Modules/interface/JetResolutionESProducer.h"
-
-
+#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
+#include "DataFormats/MuonReco/interface/Muon.h"
 
 #include "TH1.h"
 #include "TH1F.h"
@@ -200,7 +200,7 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     bool isW_;
     bool isBoostedTop_;
     bool doJets_;
-
+    int tau1tau2Dr;
 
     // ----------member data ---------------------------
     // Tokens
@@ -222,6 +222,7 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     edm::EDGetTokenT<std::vector<reco::CandIPTagInfo> >    ipTagInfoCollectionT_;
     edm::EDGetTokenT<reco::PFMETCollection> metCollectionT_;
     edm::EDGetTokenT<reco::GsfElectronCollection> eleCollectionT_;
+    edm::EDGetTokenT<reco::MuonCollection> muonCollectionT_;
 
     edm::EDGetTokenT<reco::PFTauCollection> tauCollectionT_;
     edm::EDGetTokenT<reco::PFTauDiscriminator> tauDiscriminatorT_;
@@ -356,9 +357,8 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     void branchesEvtSel_jet_dijet_top( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_dijet_ditau( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_dijet_ditau_h2aa4Tau( TTree*, edm::Service<TFileService>& );
-    void branchesEvtSel_jet_h2aa2ditau_dipho( TTree*, edm::Service<TFileService>& );
+    void branchesEvtSel_jet_dijet_ditau_h2aa2ditau_dipho( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_dijet_tau_massregression( TTree*, edm::Service<TFileService>& );
-    void branchesEvtSel_jet_dijet_tau_massregression_unphysical( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_dijet_ele_massregression( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_ele_classification( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet_background( TTree*, edm::Service<TFileService>& );
@@ -370,9 +370,8 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     bool runEvtSel_jet_dijet_top( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_dijet_ditau( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_dijet_ditau_h2aa4Tau( const edm::Event&, const edm::EventSetup& );
-    bool runEvtSel_jet_h2aa2ditau_dipho( const edm::Event&, const edm::EventSetup& );
+    bool runEvtSel_jet_dijet_ditau_h2aa2ditau_dipho( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_dijet_tau_massregression( const edm::Event&, const edm::EventSetup& );
-    bool runEvtSel_jet_dijet_tau_massregression_unphysical( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_dijet_ele_massregression( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_ele_classification( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet_background( const edm::Event&, const edm::EventSetup& );
@@ -384,9 +383,8 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     void fillEvtSel_jet_dijet_top( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_dijet_ditau( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_dijet_ditau_h2aa4Tau( const edm::Event&, const edm::EventSetup& );
-    void fillEvtSel_jet_h2aa2ditau_dipho( const edm::Event&, const edm::EventSetup& );
+    void fillEvtSel_jet_dijet_ditau_h2aa2ditau_dipho( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_dijet_tau_massregression( const edm::Event&, const edm::EventSetup& );
-    void fillEvtSel_jet_dijet_tau_massregression_unphysical( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_dijet_ele_massregression( const edm::Event&, const edm::EventSetup& );
     void fillEvtSel_jet_ele_classification( const edm::Event&, const edm::EventSetup& );
     //void fillEvtSel_jet_ele_classification( const edm::Event&, const edm::EventSetup&, std::vector<int>, std::vector<int> );
@@ -430,7 +428,8 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 //
 // constants, enums and typedefs
 //
-static const bool debug_ = false;
+static const bool debug_ = true;
+//static const bool debug_ = false;
 
 static const int nEE = 2;
 static const int nTOB = 6;
