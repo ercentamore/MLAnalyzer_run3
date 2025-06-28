@@ -74,14 +74,14 @@ RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
 
   tauCollectionT_           = consumes<reco::PFTauCollection>(iConfig.getParameter<edm::InputTag>("tauCollection"));
   tauDecayMode_             = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauDecayMode"));
-  tauMVAIsolation_          = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMVAIsolationRaw"));
-  tauMuonRejection_         = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMuonRejectionLoose"));
-  tauElectronRejectionMVA6_ = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauElectronRejectionMVA6VLoose"));
+  // tauMVAIsolation_          = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMVAIsolationRaw"));
+  // tauMuonRejection_         = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauMuonRejectionLoose"));
+  // tauElectronRejectionMVA6_ = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("tauElectronRejectionMVA6VLoose"));
 
   // boostedHPSPFTausTask_ = consumes<reco::PFTauDiscriminator>(iConfig.getParameter<edm::InputTag>("boostedHPSPFTausTask"));
 
   eleCollectionT_           = consumes<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("eleCollection"));
-  muonCollectionT_          = consumes<reco::MuonCollection>(iConfig.getParameter<edm::InputTag>("muonCollection"));
+  // muonCollectionT_          = consumes<reco::MuonCollection>(iConfig.getParameter<edm::InputTag>("muonCollection"));
 
   processName_              = iConfig.getUntrackedParameter<std::string>("processName","HLT");
   //triggerResultsToken_      = consumes<edm::TriggerResults> (iConfig.getUntrackedParameter<edm::InputTag>("triggerResultsTag", edm::InputTag("TriggerResults", "", "HLT")));
@@ -181,8 +181,6 @@ RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
 
   if ( doJets_ ) {
     branchesEvtSel_jet( RHTree, fs );
-  } else {
-    branchesEvtSel( RHTree, fs );
   }
   branchesEB           ( RHTree, fs );
   branchesEE           ( RHTree, fs );
@@ -233,8 +231,6 @@ RecHitAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   bool passedSelection = false;
     if ( doJets_ ) {
     passedSelection = runEvtSel_jet( iEvent, iSetup );
-    } else {
-    passedSelection = runEvtSel( iEvent, iSetup );
     }
 
     if ( !passedSelection ) {

@@ -136,8 +136,8 @@ bool RecHitAnalyzer::runEvtSel_jet_dijet_ditau( const edm::Event& iEvent, const 
   edm::Handle<reco::GsfElectronCollection> ele;    
   iEvent.getByToken(eleCollectionT_, ele);        
 
-  edm::Handle<reco::MuonCollection> mus;    //TODO
-  iEvent.getByToken(muonCollectionT_, mus);         //TODO 
+  // edm::Handle<reco::MuonCollection> mus;    //TODO
+  // iEvent.getByToken(muonCollectionT_, mus);         //TODO 
 
   edm::Handle<reco::PFTauDiscriminator> DecayMode;
   iEvent.getByToken(tauDecayMode_, DecayMode);

@@ -222,7 +222,7 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     edm::EDGetTokenT<std::vector<reco::CandIPTagInfo> >    ipTagInfoCollectionT_;
     edm::EDGetTokenT<reco::PFMETCollection> metCollectionT_;
     edm::EDGetTokenT<reco::GsfElectronCollection> eleCollectionT_;
-    edm::EDGetTokenT<reco::MuonCollection> muonCollectionT_;
+    // edm::EDGetTokenT<reco::MuonCollection> muonCollectionT_;
 
     edm::EDGetTokenT<reco::PFTauCollection> tauCollectionT_;
     edm::EDGetTokenT<reco::PFTauDiscriminator> tauDiscriminatorT_;
@@ -295,7 +295,6 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     //math::PtEtaPhiELorentzVectorD vPho_[2];
 
     // Selection and filling functions
-    void branchesEvtSel         ( TTree*, edm::Service<TFileService>& );
     void branchesEvtSel_jet     ( TTree*, edm::Service<TFileService>& );
     void branchesEB             ( TTree*, edm::Service<TFileService>& );
     void branchesEE             ( TTree*, edm::Service<TFileService>& );
@@ -315,7 +314,6 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     void branchesTRKlayersAtECALstitched( TTree*, edm::Service<TFileService>& );
     void branchesScalarInfo( TTree*, edm::Service<TFileService>& );
 
-    bool runEvtSel          ( const edm::Event&, const edm::EventSetup& );
     bool runEvtSel_jet      ( const edm::Event&, const edm::EventSetup& );
     void fillEB             ( const edm::Event&, const edm::EventSetup& );
     void fillEE             ( const edm::Event&, const edm::EventSetup& );
