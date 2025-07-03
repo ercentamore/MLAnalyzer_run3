@@ -295,23 +295,24 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     //math::PtEtaPhiELorentzVectorD vPho_[2];
 
     // Selection and filling functions
-    void branchesEvtSel_jet     ( TTree*, edm::Service<TFileService>& );
-    void branchesEB             ( TTree*, edm::Service<TFileService>& );
-    void branchesEE             ( TTree*, edm::Service<TFileService>& );
-    void branchesHBHE           ( TTree*, edm::Service<TFileService>& );
-    void branchesECALatHCAL     ( TTree*, edm::Service<TFileService>& );
-    void branchesECALstitched   ( TTree*, edm::Service<TFileService>& );
-    void branchesHCALatEBEE     ( TTree*, edm::Service<TFileService>& );
-    void branchesTracksAtEBEE   ( TTree*, edm::Service<TFileService>& );
-    void branchesTracksAtECALstitched   ( TTree*, edm::Service<TFileService>& );
-    void branchesPFCandsAtEBEE   ( TTree*, edm::Service<TFileService>& );
-    void branchesPFCandsAtECALstitched   ( TTree*, edm::Service<TFileService>& );
+    void branchesEvtSel_jet( TTree*, edm::Service<TFileService>& );
+    void branchesEB( TTree*, edm::Service<TFileService>& );
+    void branchesEE( TTree*, edm::Service<TFileService>& );
+    void branchesHBHE( TTree*, edm::Service<TFileService>& );
+    void branchesECALatHCAL( TTree*, edm::Service<TFileService>& );
+    void branchesECALstitched( TTree*, edm::Service<TFileService>& );
+    void branchesHCALatEBEE( TTree*, edm::Service<TFileService>& );
+    void branchesTracksAtEBEE( TTree*, edm::Service<TFileService>& );
+    void branchesTracksAtECALstitched( TTree*, edm::Service<TFileService>& );
+    void branchesPFCandsAtEBEE( TTree*, edm::Service<TFileService>& );
+    void branchesPFCandsAtECALstitched( TTree*, edm::Service<TFileService>& );
     void branchesTRKlayersAtEBEE( TTree*, edm::Service<TFileService>& );
     //void branchesTRKlayersAtECAL( TTree*, edm::Service<TFileService>& );
     void branchesTRKvolumeAtEBEE( TTree*, edm::Service<TFileService>& );
     //void branchesTRKvolumeAtECAL( TTree*, edm::Service<TFileService>& );
-    void branchesJetInfoAtECALstitched   ( TTree*, edm::Service<TFileService>& );
+    void branchesJetInfoAtECALstitched( TTree*, edm::Service<TFileService>& );
     void branchesTRKlayersAtECALstitched( TTree*, edm::Service<TFileService>& );
+    void branchesTRKtriplets( TTree*, edm::Service<TFileService>& );
     void branchesScalarInfo( TTree*, edm::Service<TFileService>& );
 
     bool runEvtSel_jet      ( const edm::Event&, const edm::EventSetup& );
@@ -322,17 +323,17 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     void fillECALstitched   ( const edm::Event&, const edm::EventSetup& );
     void fillHCALatEBEE     ( const edm::Event&, const edm::EventSetup& );
     void fillTracksAtEBEE   ( const edm::Event&, const edm::EventSetup& );
-    void fillTracksAtECALstitched   ( const edm::Event&, const edm::EventSetup&, unsigned int proj );
-    //void fillTracksAtECALstitched   ( const edm::Event&, const edm::EventSetup& );
-    void fillPFCandsAtEBEE   ( const edm::Event&, const edm::EventSetup& );
-    void fillPFCandsAtECALstitched   ( const edm::Event&, const edm::EventSetup& );
+    // void fillTracksAtECALstitched( const edm::Event&, const edm::EventSetup&, unsigned int proj );
+    void fillTrackTripletsAtECAL( const edm::Event&, const edm::EventSetup&, unsigned int proj );
+    void fillPFCandsAtEBEE( const edm::Event&, const edm::EventSetup& );
+    void fillPFCandsAtECALstitched( const edm::Event&, const edm::EventSetup& );
     void fillTRKlayersAtEBEE( const edm::Event&, const edm::EventSetup& );
     //void fillTRKlayersAtECAL( const edm::Event&, const edm::EventSetup& );
     void fillTRKvolumeAtEBEE( const edm::Event&, const edm::EventSetup& );
     //void fillTRKvolumeAtECAL( const edm::Event&, const edm::EventSetup& );
-    void fillJetInfoAtECALstitched   ( const edm::Event&, const edm::EventSetup& );
-    //void fillTRKlayersAtECALstitched( TTree*, edm::Service<TFileService>& );
-    void fillTRKlayersAtECALstitched( const edm::Event&, const edm::EventSetup&, unsigned int proj );
+    void fillJetInfoAtECALstitched  ( const edm::Event&, const edm::EventSetup& );
+    // void fillTRKlayersAtECALstitched( const edm::Event&, const edm::EventSetup&, unsigned int proj );
+    void fillTRKtriplets( const edm::Event&, const edm::EventSetup&, unsigned int proj );
     void fillScalarInfo( const edm::Event&, const edm::EventSetup& );
 
     // bool debug_;
