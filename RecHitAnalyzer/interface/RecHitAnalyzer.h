@@ -313,7 +313,7 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     void branchesJetInfoAtECALstitched( TTree*, edm::Service<TFileService>& );
     void branchesTRKlayersAtECALstitched( TTree*, edm::Service<TFileService>& );
     void branchesTrackTripletsAtECAL( TTree*, edm::Service<TFileService>& );
-    void branchesTRKtriplets( TTree*, edm::Service<TFileService>& );
+    void branchesTRKTriplets( TTree*, edm::Service<TFileService>& );
     void branchesScalarInfo( TTree*, edm::Service<TFileService>& );
 
     bool runEvtSel_jet      ( const edm::Event&, const edm::EventSetup& );
@@ -334,7 +334,7 @@ class RecHitAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
     //void fillTRKvolumeAtECAL( const edm::Event&, const edm::EventSetup& );
     void fillJetInfoAtECALstitched  ( const edm::Event&, const edm::EventSetup& );
     void fillTRKlayersAtECALstitched( const edm::Event&, const edm::EventSetup&, unsigned int proj );
-    void fillTRKtriplets( const edm::Event&, const edm::EventSetup&, unsigned int proj );
+    void fillTRKTriplets( const edm::Event&, const edm::EventSetup&, unsigned int proj );
     void fillScalarInfo( const edm::Event&, const edm::EventSetup& );
 
     // bool debug_;
