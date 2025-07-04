@@ -19,6 +19,16 @@ extern std::vector<float> vTID_TRKTriplets_ [nTID ][Nhitproj];
 extern std::vector<float> vTOB_TRKTriplets_ [nTOB ][Nhitproj];
 extern std::vector<float> vTEC_TRKTriplets_ [nTEC ][Nhitproj];
 
+
+template<std::size_t NL, std::size_t NP>
+static void
+zeroContainer(std::vector<float> (&arr)[NL][NP])
+{
+  for (std::size_t l = 0; l < NL; ++l)
+    for (std::size_t p = 0; p < NP; ++p)
+      arr[l][p].assign(3 * kMaxTripletHits, kPadValue);
+}
+
 // -----------------------------------------------------------------------------
 // Container definitions (one vector / layer / projection)
 // -----------------------------------------------------------------------------
@@ -87,15 +97,6 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   //----------------------------------------
   // 2a.  Zero-initialize the target vectors
   //----------------------------------------
-  template<std::size_t NL, std::size_t NP>
-  static void
-  zeroContainer(std::vector<float> (&arr)[NL][NP])
-  {
-    for (std::size_t l = 0; l < NL; ++l)
-      for (std::size_t p = 0; p < NP; ++p)
-        arr[l][p].assign(3 * kMaxTripletHits, kPadValue);
-  }
-
   zeroContainer(vBPIX_TRKTriplets_, nBPIX);
   zeroContainer(vFPIX_TRKTriplets_, nFPIX);
   zeroContainer(vTIB_TRKTriplets_,  nTIB );
