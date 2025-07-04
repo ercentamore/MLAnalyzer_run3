@@ -110,8 +110,11 @@ RecHitAnalyzer::fillTrackTripletsAtECAL (const edm::Event&  iEvent,
     if (id == DetId(0)) continue; // safeguard
 
     // Rank order by pT
-    TrackHit hOcc { tk.pt(),           1.f,  eta, phi };
-    TrackHit hPt  { tk.pt(),           tk.pt(), eta, phi };
+    TrackHit hOcc { static_cast<float>(tk.pt()), 1.f,
+                static_cast<float>(eta),    static_cast<float>(phi) };
+
+    TrackHit hPt  { static_cast<float>(tk.pt()), static_cast<float>(tk.pt()),
+                static_cast<float>(eta),    static_cast<float>(phi) };
 
     trackOcc.emplace_back( std::move(hOcc) );
     trackPt.emplace_back ( std::move(hPt ) );
