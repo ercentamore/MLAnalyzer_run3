@@ -87,20 +87,21 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   //----------------------------------------
   // 2a.  Zero-initialize the target vectors
   //----------------------------------------
-  auto initContainer = [](auto& arr, int NLAYER)
+  template<std::size_t NL, std::size_t NP>
+  static void
+  zeroContainer(std::vector<float> (&arr)[NL][NP])
   {
-    for (int iL = 0; iL < NLAYER; ++iL) {
-      for (unsigned int p = 0; p < Nhitproj; ++p)
-        arr[iL][p].assign(3 * kMaxTripletHits, kPadValue);
-    }
-  };
+    for (std::size_t l = 0; l < NL; ++l)
+      for (std::size_t p = 0; p < NP; ++p)
+        arr[l][p].assign(3 * kMaxTripletHits, kPadValue);
+  }
 
-  initContainer(vBPIX_TRKTriplets_, nBPIX);
-  initContainer(vFPIX_TRKTriplets_, nFPIX);
-  initContainer(vTIB_TRKTriplets_,  nTIB );
-  initContainer(vTID_TRKTriplets_,  nTID );
-  initContainer(vTOB_TRKTriplets_,  nTOB );
-  initContainer(vTEC_TRKTriplets_,  nTEC );
+  zeroContainer(vBPIX_TRKTriplets_, nBPIX);
+  zeroContainer(vFPIX_TRKTriplets_, nFPIX);
+  zeroContainer(vTIB_TRKTriplets_,  nTIB );
+  zeroContainer(vTID_TRKTriplets_,  nTID );
+  zeroContainer(vTOB_TRKTriplets_,  nTOB );
+  zeroContainer(vTEC_TRKTriplets_,  nTEC );
 
   //----------------------------------------
   // 2b.  Re-use the existing hit loops, but
