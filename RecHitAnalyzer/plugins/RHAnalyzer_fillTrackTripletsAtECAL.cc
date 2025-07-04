@@ -17,9 +17,6 @@ namespace {
   };
 }
 
-// =============================================================================
-// 1) Book ROOT branches
-// =============================================================================
 void
 RecHitAnalyzer::branchesTrackTripletsAtECAL (TTree *tree,
                                              edm::Service<TFileService>&)
@@ -32,23 +29,17 @@ RecHitAnalyzer::branchesTrackTripletsAtECAL (TTree *tree,
   }
 }
 
-// =============================================================================
-// 2) Fill logic
-// =============================================================================
 void
 RecHitAnalyzer::fillTrackTripletsAtECAL (const edm::Event&  iEvent,
                                          const edm::EventSetup& iSetup,
                                          unsigned           proj)
 {
-  // ------------------------------------------------------------------
-  // Scratch buffers to collect every *individual* track after propagation
-  // ------------------------------------------------------------------
+  // Scratch buffers to collect every individual track after propagation
   std::vector<TrackHit> trackOcc;  // for ECAL_tracks     (val=1)
   std::vector<TrackHit> trackPt;   // for ECAL_tracksPt   (val=pT)
 
   // We repeat the propagation logic of the stitched module but
   // *do not* group into pixels – each hit kept separate.
-  // ------------------------------------------------------------------
   auto const& magfield    = iSetup.getData(magfieldToken_);
   auto const& caloGeom    = iSetup.getData(caloGeomToken_);
   auto const& transTrackB = iSetup.getData(transTrackBToken_);
