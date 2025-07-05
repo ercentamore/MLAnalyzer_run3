@@ -189,7 +189,7 @@ RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
   branchesECALstitched ( RHTree, fs );
   branchesHCALatEBEE   ( RHTree, fs );
   branchesTracksAtEBEE(RHTree, fs);
-  // branchesTracksAtECALstitched( RHTree, fs);
+  branchesTracksAtECALstitched( RHTree, fs);
   branchesTrackTripletsAtECAL( RHTree, fs);
   branchesPFCandsAtEBEE(RHTree, fs);
   branchesPFCandsAtECALstitched( RHTree, fs);
@@ -199,7 +199,7 @@ RecHitAnalyzer::RecHitAnalyzer(const edm::ParameterSet& iConfig)
   //branchesTRKvolumeAtECAL(RHTree, fs);
   branchesJetInfoAtECALstitched( RHTree, fs);
   branchesScalarInfo( RHTree, fs);
-  // branchesTRKlayersAtECALstitched(RHTree, fs);
+  branchesTRKlayersAtECALstitched(RHTree, fs);
   branchesTRKTriplets(RHTree, fs);  
 
   // For FC inputs
@@ -250,7 +250,7 @@ RecHitAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   fillTracksAtEBEE( iEvent, iSetup );
   for (unsigned int i=0;i<Nproj;i++)
   {
-    // fillTracksAtECALstitched( iEvent, iSetup, i );
+    fillTracksAtECALstitched( iEvent, iSetup, i );
     fillTrackTripletsAtECAL( iEvent, iSetup, i );
   }
   fillPFCandsAtEBEE( iEvent, iSetup );
@@ -263,7 +263,7 @@ RecHitAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   fillScalarInfo( iEvent, iSetup );
   for (unsigned int i=0;i<Nhitproj;i++)
   {
-    // fillTRKlayersAtECALstitched( iEvent, iSetup, i );
+    fillTRKlayersAtECALstitched( iEvent, iSetup, i );
     fillTRKTriplets( iEvent, iSetup, i );
   }
 
