@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------------
 // Configuration
 // -----------------------------------------------------------------------------
-static constexpr unsigned int kMaxTrackTriplets = 5000; // keep <=5k
+static constexpr unsigned int kMaxTrackTriplets = 8192; // keep <=5k
 static constexpr float        kTripletPad       = -999.f;
 
 // -----------------------------------------------------------------------------

@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------------
 // Constants
 // -----------------------------------------------------------------------------
-static constexpr unsigned int kMaxTripletHits = 5000;   // keep at most 5k
+static constexpr unsigned int kMaxTripletHits = 8192;   // keep at most 5k
 static constexpr float        kPadValue       = -999.f; // pad sentinel
 
 template<std::size_t NL, std::size_t NP> static void zeroContainer(std::vector<float> (&arr)[NL][NP])
