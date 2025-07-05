@@ -16,7 +16,7 @@ template<std::size_t NL, std::size_t NP> static void zeroContainer(std::vector<f
 }
 
 // -----------------------------------------------------------------------------
-// Per‑detector containers  (value, eta, phi packed as V,E,P,V,E,P, ...)
+// Per-detector containers  (value, eta, phi packed as V,E,P,V,E,P, ...)
 // size will always be 3*kMaxTripletHits
 // -----------------------------------------------------------------------------
 extern std::vector<float> vBPIX_TRKTriplets_[nBPIX][Nhitproj];
@@ -53,7 +53,7 @@ namespace {
 }
 
 // -----------------------------------------------------------------------------
-// 1) Set up the ROOT branches – one per layer / projection
+// 1) Set up the ROOT branches - one per layer / projection
 // -----------------------------------------------------------------------------
 void
 RecHitAnalyzer::branchesTRKTriplets(TTree *tree,
@@ -82,9 +82,9 @@ RecHitAnalyzer::branchesTRKTriplets(TTree *tree,
 
 // -----------------------------------------------------------------------------
 // 2) Filling logic
-//    – Gather *all* hits that land on ECAL for the given (sub-det & layer)
-//    – Sort by descending value
-//    – Keep <= 5 000 and write packed as (V,E,P,...); pad with -999
+//    - Gather *all* hits that land on ECAL for the given (sub-det & layer)
+//    - Sort by descending value
+//    - Keep <= 5 000 and write packed as (V,E,P,...); pad with -999
 // -----------------------------------------------------------------------------
 void
 RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
