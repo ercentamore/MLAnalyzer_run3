@@ -8,6 +8,13 @@
 static constexpr unsigned int kMaxTripletHits = 5000;   // keep at most 5k
 static constexpr float        kPadValue       = -999.f; // pad sentinel
 
+template<std::size_t NL, std::size_t NP> static void zeroContainer(std::vector<float> (&arr)[NL][NP])
+{
+  for (std::size_t l = 0; l < NL; ++l)
+    for (std::size_t p = 0; p < NP; ++p)
+      arr[l][p].assign(3 * kMaxTripletHits, kPadValue);
+}
+
 // -----------------------------------------------------------------------------
 // Per‑detector containers  (value, eta, phi packed as V,E,P,V,E,P, ...)
 // size will always be 3*kMaxTripletHits
@@ -18,16 +25,6 @@ extern std::vector<float> vTIB_TRKTriplets_ [nTIB ][Nhitproj];
 extern std::vector<float> vTID_TRKTriplets_ [nTID ][Nhitproj];
 extern std::vector<float> vTOB_TRKTriplets_ [nTOB ][Nhitproj];
 extern std::vector<float> vTEC_TRKTriplets_ [nTEC ][Nhitproj];
-
-
-template<std::size_t NL, std::size_t NP>
-static void
-zeroContainer(std::vector<float> (&arr)[NL][NP])
-{
-  for (std::size_t l = 0; l < NL; ++l)
-    for (std::size_t p = 0; p < NP; ++p)
-      arr[l][p].assign(3 * kMaxTripletHits, kPadValue);
-}
 
 // -----------------------------------------------------------------------------
 // Container definitions (one vector / layer / projection)
@@ -97,12 +94,12 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   //----------------------------------------
   // 2a.  Zero-initialize the target vectors
   //----------------------------------------
-  zeroContainer(vBPIX_TRKTriplets_, nBPIX);
-  zeroContainer(vFPIX_TRKTriplets_, nFPIX);
-  zeroContainer(vTIB_TRKTriplets_,  nTIB );
-  zeroContainer(vTID_TRKTriplets_,  nTID );
-  zeroContainer(vTOB_TRKTriplets_,  nTOB );
-  zeroContainer(vTEC_TRKTriplets_,  nTEC );
+  zeroContainer(vBPIX_TRKTriplets_);
+  zeroContainer(vFPIX_TRKTriplets_);
+  zeroContainer(vTIB_TRKTriplets_ );
+  zeroContainer(vTID_TRKTriplets_ );
+  zeroContainer(vTOB_TRKTriplets_ );
+  zeroContainer(vTEC_TRKTriplets_ );
 
   //----------------------------------------
   // 2b.  Re-use the existing hit loops, but
