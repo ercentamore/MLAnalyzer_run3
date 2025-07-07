@@ -150,7 +150,7 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   for (int l=0; l<nTOB; ++l)
     flushLayer(scratchTOB[l], vTOB_TRKTriplets_[l][proj]);
   
-    for (int l=0; l<nTID; ++l)
+  for (int l=0; l<nTID; ++l)
     flushLayer(scratchTID[l], vTID_TRKTriplets_[l][proj]);
 
   for (int l=0; l<nTEC; ++l)
