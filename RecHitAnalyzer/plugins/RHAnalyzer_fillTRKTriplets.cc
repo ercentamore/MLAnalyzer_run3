@@ -2,9 +2,6 @@
 #include <algorithm>   // std::sort
 #include <tuple>
 
-// -----------------------------------------------------------------------------
-// Constants
-// -----------------------------------------------------------------------------
 static constexpr unsigned int kMaxTripletHits = 8192;   // keep at most 5k
 static constexpr float        kPadValue       = -999.f; // pad sentinel
 
@@ -15,20 +12,15 @@ template<std::size_t NL, std::size_t NP> static void zeroContainer(std::vector<f
       arr[l][p].assign(3 * kMaxTripletHits, kPadValue);
 }
 
-// -----------------------------------------------------------------------------
-// Per-detector containers  (value, eta, phi packed as V,E,P,V,E,P, ...)
-// size will always be 3*kMaxTripletHits
-// -----------------------------------------------------------------------------
+
 extern std::vector<float> vBPIX_TRKTriplets_[nBPIX][Nhitproj];
 extern std::vector<float> vFPIX_TRKTriplets_[nFPIX][Nhitproj];
-extern std::vector<float> vTIB_TRKTriplets_ [nTIB ][Nhitproj];
-extern std::vector<float> vTID_TRKTriplets_ [nTID ][Nhitproj];
-extern std::vector<float> vTOB_TRKTriplets_ [nTOB ][Nhitproj];
-extern std::vector<float> vTEC_TRKTriplets_ [nTEC ][Nhitproj];
+extern std::vector<float> vTIB_TRKTriplets_[ nTIB ][Nhitproj];
+extern std::vector<float> vTID_TRKTriplets_[ nTID ][Nhitproj];
+extern std::vector<float> vTOB_TRKTriplets_[ nTOB ][Nhitproj];
+extern std::vector<float> vTEC_TRKTriplets_[ nTEC ][Nhitproj];
 
-// -----------------------------------------------------------------------------
-// Container definitions (one vector / layer / projection)
-// -----------------------------------------------------------------------------
+
 #define DEFINE_TRIPLET_CONTAINER(name, NLAYER)         \
   std::vector<float> name[NLAYER][Nhitproj];
 
@@ -40,9 +32,6 @@ DEFINE_TRIPLET_CONTAINER(vTOB_TRKTriplets_,  nTOB )
 DEFINE_TRIPLET_CONTAINER(vTEC_TRKTriplets_,  nTEC )
 #undef DEFINE_TRIPLET_CONTAINER
 
-// -----------------------------------------------------------------------------
-// Helper type; kept local to this translation unit
-// -----------------------------------------------------------------------------
 namespace {
   struct HitTriple {
     float value;
@@ -52,9 +41,6 @@ namespace {
   };
 }
 
-// -----------------------------------------------------------------------------
-// 1) Set up the ROOT branches - one per layer / projection
-// -----------------------------------------------------------------------------
 void
 RecHitAnalyzer::branchesTRKTriplets(TTree *tree,
                                           edm::Service<TFileService>&)
@@ -80,20 +66,11 @@ RecHitAnalyzer::branchesTRKTriplets(TTree *tree,
   }
 }
 
-// -----------------------------------------------------------------------------
-// 2) Filling logic
-//    - Gather *all* hits that land on ECAL for the given (sub-det & layer)
-//    - Sort by descending value
-//    - Keep <= 5 000 and write packed as (V,E,P,...); pad with -999
-// -----------------------------------------------------------------------------
 void
 RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
                                       const edm::EventSetup& iSetup,
                                       unsigned int      proj)
 {
-  //----------------------------------------
-  // 2a.  Zero-initialize the target vectors
-  //----------------------------------------
   zeroContainer(vBPIX_TRKTriplets_);
   zeroContainer(vFPIX_TRKTriplets_);
   zeroContainer(vTIB_TRKTriplets_ );
@@ -101,12 +78,6 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   zeroContainer(vTOB_TRKTriplets_ );
   zeroContainer(vTEC_TRKTriplets_ );
 
-  //----------------------------------------
-  // 2b.  Re-use the existing hit loops, but
-  //      instead of mapping to ECAL pixels
-  //      push_back(value,eta,phi) to tmp vectors
-  //----------------------------------------
-  // A thin wrapper makes the call site identical for any sub-detector
   auto pushHit = [&](std::vector<HitTriple> layerHits[],
                      int layerIdx,
                      float value, float eta, float phi)
@@ -114,15 +85,16 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
     layerHits[layerIdx].push_back({value, eta, phi});
   };
 
-  // -----------------------------------------------------------------------
-  //    Pixel hits
-  // -----------------------------------------------------------------------
   edm::Handle<SiPixelRecHitCollection> recHitColl;
   iEvent.getByToken(siPixelRecHitCollectionT_, recHitColl);
 
   // one scratch vector per BPIX/FPIX layer
   std::vector<HitTriple> scratchBPIX[nBPIX];
   std::vector<HitTriple> scratchFPIX[nFPIX];
+  std::vector<HitTriple> scratchTIB[nTIB];
+  std::vector<HitTriple> scratchTOB[nTOB];
+  std::vector<HitTriple> scratchTID[nTID];
+  std::vector<HitTriple> scratchTEC[nTEC];
 
   for (auto detsetIt = recHitColl->begin(); detsetIt != recHitColl->end(); ++detsetIt)
   {
@@ -142,14 +114,15 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
         const float   eta  = pos.Eta();
         const float   phi  = pos.Phi();
         const float   val  = 1.f;            // <-- tracker hits are unit weight
-        if (isBPix) pushHit(scratchBPIX, layer, val, eta, phi);
-        else        pushHit(scratchFPIX, layer, val, eta, phi);
+        if (detId.subdetId() == PixelSubdetector::PixelBarrel) pushHit(scratchBPIX, layer, val, eta, phi);
+        else if (detId.subdetId() == PixelSubdetector::PixelEndcap) pushHit(scratchFPIX, layer, val, eta, phi);
+        else if (detId.subdetId() == SiStripDetId::TIB) pushHit(scratchTIB, layer, val, eta, phi);
+        else if (detId.subdetId() == SiStripDetId::TOB) pushHit(scratchTOB, layer, val, eta, phi);
+        else if (detId.subdetId() == SiStripDetId::TID) pushHit(scratchTID, layer, val, eta, phi);
+        else if (detId.subdetId() == SiStripDetId::TEC) pushHit(scratchTEC, layer, val, eta, phi);
       }
   }
 
-  //----------------------------------------
-  // 2c.  Compress and write to output vectors
-  //----------------------------------------
   auto flushLayer = [](const std::vector<HitTriple> &src,
                        std::vector<float>           &dest)
   {
@@ -170,9 +143,16 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
 
   for (int l=0; l<nFPIX; ++l)
     flushLayer(scratchFPIX[l], vFPIX_TRKTriplets_[l][proj]);
+  
+  for (int l=0; l<nTIB; ++l)
+    flushLayer(scratchTIB[l], vTIB_TRKTriplets_[l][proj]);
 
-  // -----------------------------------------------------------------------
-  // Repeat the same "flush" procedure for all Strip collections (TIB, ...),
-  // using analogous scratch vectors defined in the corresponding loops.
-  // -----------------------------------------------------------------------
+  for (int l=0; l<nTOB; ++l)
+    flushLayer(scratchTOB[l], vTOB_TRKTriplets_[l][proj]);
+  
+    for (int l=0; l<nTID; ++l)
+    flushLayer(scratchTID[l], vTID_TRKTriplets_[l][proj]);
+
+  for (int l=0; l<nTEC; ++l)
+    flushLayer(scratchTEC[l], vTEC_TRKTriplets_[l][proj]);
 }
