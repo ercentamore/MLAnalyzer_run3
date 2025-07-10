@@ -88,6 +88,9 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   edm::Handle<SiPixelRecHitCollection> recHitColl;
   iEvent.getByToken(siPixelRecHitCollectionT_, recHitColl);
 
+  edm::Handle<SiStripRecHit2DCollection>  stripRPhiRecHitColl;
+  iEvent.getByToken(siStripRPhiRecHitCollectionT_, stripRPhiRecHitColl);
+
   // one scratch vector per BPIX/FPIX layer
   std::vector<HitTriple> scratchBPIX[nBPIX];
   std::vector<HitTriple> scratchFPIX[nFPIX];
@@ -100,20 +103,19 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   {
     const DetId      detId  = DetId(detsetIt->detId());
     const auto      &tTopo  = iSetup.getData(tTopoToken_);
-    const auto      &geom   = iSetup.getData(tkGeomToken_);
-    const auto      *dg     = dynamic_cast<const PixelGeomDetUnit*>(geom.idToDetUnit(detId));
-    const unsigned   layer  = getLayer(detId, &tTopo) - 1;  // 0-based
-    const bool       isBPix = (detId.subdetId() == PixelSubdetector::PixelBarrel);
+    const auto       &geom  = iSetup.getData(tkGeomToken_);
+    const auto         *du  = geom.idToDetUnit(detId);
+    const unsigned   layer  = getLayer(detId, &tTopo) - 1;
 
     for (const auto &hit : *detsetIt)
       if (hit.isValid())
       {
-        const auto  lp    = hit.localPosition();
-        const auto  gp    = dg->surface().toGlobal(Local3DPoint(lp));
+        const auto  lp     = hit.localPosition();
+        const auto gp      = detUnit->surface().toGlobal(Local3DPoint(lp));
         const TVector3 pos(gp.x(), gp.y(), gp.z());
         const float   eta  = pos.Eta();
         const float   phi  = pos.Phi();
-        const float   val  = 1.f;            // <-- tracker hits are unit weight
+        const float   val  = 1.f;
         if (detId.subdetId() == PixelSubdetector::PixelBarrel) pushHit(scratchBPIX, layer, val, eta, phi);
         else if (detId.subdetId() == PixelSubdetector::PixelEndcap) pushHit(scratchFPIX, layer, val, eta, phi);
         else if (detId.subdetId() == SiStripDetId::TIB) pushHit(scratchTIB, layer, val, eta, phi);
