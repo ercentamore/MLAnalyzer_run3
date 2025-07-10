@@ -104,7 +104,7 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
     const DetId      detId  = DetId(detsetIt->detId());
     const auto      &tTopo  = iSetup.getData(tTopoToken_);
     const auto       &geom  = iSetup.getData(tkGeomToken_);
-    const auto         *du  = geom.idToDetUnit(detId);
+    const auto         *detUnit  = geom.idToDetUnit(detId);
     const unsigned   layer  = getLayer(detId, &tTopo) - 1;
 
     for (const auto &hit : *detsetIt)
