@@ -7,7 +7,7 @@ inputFiles_='file:/uscms/home/ereinhar/nobackup/CMSSW_13_0_13/src/AOD_HToAATo2Ta
 
 maxEvents_=-1
 skipEvents_=0#
-outputFile_='MLAnalyzer_HToAATo2Tau2Photon.root'
+outputFile_='MLAnalyzer_HToAATo2Tau2Photon_with_triggers.root'
 
 # cmd="cmsTraceExceptions cmsRun %s inputFiles=%s maxEvents=%d skipEvents=%d outputFile=%s"%(cfg,inputFiles_,maxEvents_,skipEvents_,outputFile_)
 cmd="cmsRun %s inputFiles=%s maxEvents=%d skipEvents=%d outputFile=%s"%(cfg,inputFiles_,maxEvents_,skipEvents_,outputFile_)
