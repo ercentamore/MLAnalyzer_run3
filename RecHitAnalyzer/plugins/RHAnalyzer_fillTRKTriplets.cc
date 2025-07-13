@@ -121,22 +121,21 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
       }
   }
 
-  for (auto detsetIt = stripRPhiRecHitColl->begin();
-     detsetIt != stripRPhiRecHitColl->end(); ++detsetIt)
+  for (auto detsetIt = stripRPhiRecHitColl->begin(); detsetIt != stripRPhiRecHitColl->end(); ++detsetIt)
   {
       const DetId  detId(detsetIt->detId());
-      const auto  &geom  = iSetup.getData(tkGeomToken_);
-      const auto  *det   = geom.idToDetUnit(detId);
-      const auto  &tTopo = iSetup.getData(tTopoToken_);
+      const auto  &geom    = iSetup.getData(tkGeomToken_);
+      const auto  *detUnit = geom.idToDetUnit(detId);
+      const auto  &tTopo   = iSetup.getData(tTopoToken_);
 
       unsigned layer = getLayer(detId, &tTopo);
-      if (layer == 0) continue;        // protect against invalid layer
-      --layer;                         // make it 0‑based like in pixel loop
+      if (layer == 0) continue;
+      --layer;
 
       for (auto const &hit : *detsetIt)
           if (hit.isValid())
           {
-              GlobalPoint gp = det->surface().toGlobal(hit.localPosition());
+              GlobalPoint gp = detUnit->surface().toGlobal(hit.localPosition());
               float eta = gp.eta();
               float phi = gp.phi();
               float val = 1.f;
