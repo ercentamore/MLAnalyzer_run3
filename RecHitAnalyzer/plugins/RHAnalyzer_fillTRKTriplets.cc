@@ -104,25 +104,50 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
     const DetId      detId  = DetId(detsetIt->detId());
     const auto      &tTopo  = iSetup.getData(tTopoToken_);
     const auto       &geom  = iSetup.getData(tkGeomToken_);
-    const auto         *detUnit  = geom.idToDetUnit(detId);
+    const auto    *detUnit  = geom.idToDetUnit(detId);
     const unsigned   layer  = getLayer(detId, &tTopo) - 1;
 
     for (const auto &hit : *detsetIt)
       if (hit.isValid())
       {
-        const auto  lp     = hit.localPosition();
-        const auto gp      = detUnit->surface().toGlobal(Local3DPoint(lp));
+        const auto     lp  = hit.localPosition();
+        const auto     gp  = detUnit->surface().toGlobal(Local3DPoint(lp));
         const TVector3 pos(gp.x(), gp.y(), gp.z());
         const float   eta  = pos.Eta();
         const float   phi  = pos.Phi();
         const float   val  = 1.f;
         if (detId.subdetId() == PixelSubdetector::PixelBarrel) pushHit(scratchBPIX, layer, val, eta, phi);
         else if (detId.subdetId() == PixelSubdetector::PixelEndcap) pushHit(scratchFPIX, layer, val, eta, phi);
-        else if (detId.subdetId() == SiStripDetId::TIB) pushHit(scratchTIB, layer, val, eta, phi);
-        else if (detId.subdetId() == SiStripDetId::TOB) pushHit(scratchTOB, layer, val, eta, phi);
-        else if (detId.subdetId() == SiStripDetId::TID) pushHit(scratchTID, layer, val, eta, phi);
-        else if (detId.subdetId() == SiStripDetId::TEC) pushHit(scratchTEC, layer, val, eta, phi);
       }
+  }
+
+  for (auto detsetIt = stripRPhiRecHitColl->begin();
+     detsetIt != stripRPhiRecHitColl->end(); ++detsetIt)
+  {
+      const DetId  detId(detsetIt->detId());
+      const auto  &geom  = iSetup.getData(tkGeomToken_);
+      const auto  *det   = geom.idToDetUnit(detId);
+      const auto  &tTopo = iSetup.getData(tTopoToken_);
+
+      unsigned layer = getLayer(detId, &tTopo);
+      if (layer == 0) continue;        // protect against invalid layer
+      --layer;                         // make it 0‑based like in pixel loop
+
+      for (auto const &hit : *detsetIt)
+          if (hit.isValid())
+          {
+              GlobalPoint gp = det->surface().toGlobal(hit.localPosition());
+              float eta = gp.eta();
+              float phi = gp.phi();
+              float val = 1.f;
+
+              switch (detId.subdetId()) {
+                case SiStripDetId::TIB: pushHit(scratchTIB, layer, val, eta, phi); break;
+                case SiStripDetId::TOB: pushHit(scratchTOB, layer, val, eta, phi); break;
+                case SiStripDetId::TID: pushHit(scratchTID, layer, val, eta, phi); break;
+                case SiStripDetId::TEC: pushHit(scratchTEC, layer, val, eta, phi); break;
+              }
+          }
   }
 
   auto flushLayer = [](const std::vector<HitTriple> &src,

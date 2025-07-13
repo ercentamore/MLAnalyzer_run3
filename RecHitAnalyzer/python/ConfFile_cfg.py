@@ -65,7 +65,7 @@ print (" >> Processing as:",(process.fevt.mode))
 
 process.TFileService = cms.Service("TFileService",
     fileName = cms.string(options.outputFile)
-    )
+)
 
 ############################
 # Event Analysis
@@ -74,8 +74,8 @@ process.TFileService = cms.Service("TFileService",
 process.hltFilter = cms.EDFilter("HLTHighLevel",
                                 eventSetupPathsKey = cms.string(''),
                                 TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
-                                # HLTPaths = cms.vstring('*'),
-                                HLTPaths = cms.vstring('HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_v','HLT_DoublePhoton33_CaloIdL_v'),
+                                HLTPaths = cms.vstring('*'),
+                                # HLTPaths = cms.vstring('HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_v','HLT_DoublePhoton33_CaloIdL_v'),
                                 andOr = cms.bool(True),
                                 throw = cms.bool(False)
                                 )
