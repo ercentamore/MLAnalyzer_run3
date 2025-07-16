@@ -11,7 +11,7 @@ static constexpr float        kTripletPad       = -999.f;
 // -----------------------------------------------------------------------------
 // One std::vector<float> per channel & projection
 //  * ECAL_tracksTriplet[proj]   : value (=1), eta, phi   -> ranked by track pT
-//  * ECAL_tracksPtTriplet[proj] : pT,    eta, phi        -> ranked by pT
+//  * ECAL_tracksPtTriplet[proj] : pT, eta, phi           -> ranked by pT
 // size of each = 3*kMaxTrackTriplets
 // -----------------------------------------------------------------------------
 extern std::vector<float> vECAL_tracksTriplet_  [Nproj];
