@@ -39,6 +39,12 @@ namespace {
     float phi;
     bool operator<(const HitTriple& other) const { return value > other.value; }
   };
+  
+  inline float wrapPhi(float phi) {
+    while (phi >  M_PI) phi -= 2.f*M_PI;
+    while (phi <=-M_PI) phi += 2.f*M_PI;
+    return phi;
+  }
 }
 
 void
@@ -113,11 +119,11 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
     for (auto const& hit : trk.recHits()) {
       if (!hit || !hit->isValid()) continue;
 
-      DetId id( spr::findDetIdECAL(&caloGeom, eta_for_id, phi_for_id, false) );
-      if (id == DetId(0)) continue;
+      DetId detId( spr::findDetIdECAL(&caloGeom, eta_for_id, phi_for_id, false) );
+      if (detId == DetId(0)) continue;
 
       if (kSnapToCrystalCenter) {
-        auto const cell = caloGeom.getGeometry(id); // shared_ptr<const CaloCellGeometry>
+        auto const cell = caloGeom.getGeometry(detId); // shared_ptr<const CaloCellGeometry>
         if (!cell) continue; // check pointer is valid
         const GlobalPoint& gp = cell->getPosition();
         eta = gp.eta();
