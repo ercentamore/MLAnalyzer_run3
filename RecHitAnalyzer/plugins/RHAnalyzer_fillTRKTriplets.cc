@@ -39,12 +39,6 @@ namespace {
     float phi;
     bool operator<(const HitTriple& other) const { return value > other.value; }
   };
-  
-  inline float wrapPhi(float phi) {
-    while (phi >  M_PI) phi -= 2.f*M_PI;
-    while (phi <=-M_PI) phi += 2.f*M_PI;
-    return phi;
-  }
 }
 
 void
@@ -78,7 +72,7 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
 {
   const TrackerTopology&  tTopo  = iSetup.getData(tTopoToken_);
   const TrackerGeometry*  tkGeom = &iSetup.getData(tkGeomToken_);
-
+  
   zeroContainer(vBPIX_TRKTriplets_);
   zeroContainer(vFPIX_TRKTriplets_);
   zeroContainer(vTIB_TRKTriplets_ );
@@ -119,18 +113,7 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
     for (auto const& hit : trk.recHits()) {
       if (!hit || !hit->isValid()) continue;
 
-      DetId detId( spr::findDetIdECAL(&caloGeom, eta_for_id, phi_for_id, false) );
-      if (detId == DetId(0)) continue;
-
-      if (kSnapToCrystalCenter) {
-        auto const cell = caloGeom.getGeometry(detId); // shared_ptr<const CaloCellGeometry>
-        if (!cell) continue; // check pointer is valid
-        const GlobalPoint& gp = cell->getPosition();
-        eta = gp.eta();
-        phi = wrapPhi(gp.phi());
-      } else {
-        phi = wrapPhi(phi);
-      }
+      DetId detId = hit->geographicalId();
       unsigned layer = getLayer(detId, &tTopo) - 1;
 
       const auto *detUnit = tkGeom->idToDetUnit(detId);

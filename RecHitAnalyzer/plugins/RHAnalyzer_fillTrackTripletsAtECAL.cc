@@ -155,10 +155,9 @@ RecHitAnalyzer::fillTrackTripletsAtECAL (const edm::Event&  iEvent,
     if (id == DetId(0)) continue;
 
     if (kSnapToCrystalCenter) {
-      const auto* cell = caloGeom.getGeometry(id);
-      if (!cell) continue; // extra safety
+      auto const cell = caloGeom.getGeometry(id);  // shared_ptr<const CaloCellGeometry>
+      if (!cell) continue;                         // check pointer is valid
       const GlobalPoint& gp = cell->getPosition();
-      // Use center for the output coordinates so these line up with hits
       eta = gp.eta();
       phi = wrapPhi(gp.phi());
     } else {
