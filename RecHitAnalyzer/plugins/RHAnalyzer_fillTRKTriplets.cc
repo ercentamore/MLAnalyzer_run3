@@ -48,12 +48,12 @@ RecHitAnalyzer::branchesTRKTriplets(TTree *tree,
   char hname[64];
   for (unsigned int proj = 0; proj < Nhitproj; ++proj) {
 
-#   define BOOK(detStr, ARR, NLAYER)                                   \
-      for (int iL = 0; iL < NLAYER; ++iL) {                            \
-        std::snprintf(hname, sizeof(hname),                            \
-                      detStr "_layer%d_triplets%s", iL+1,              \
-                      hit_projections[proj].c_str());                  \
-        tree->Branch(hname, &ARR[iL][proj]);                           \
+#   define BOOK(detStr, ARR, NLAYER) \
+      for (int iL = 0; iL < NLAYER; ++iL) { \
+        std::snprintf(hname, sizeof(hname), \
+                      detStr "_layer%d_triplets%s", iL+1, \
+                      hit_projections[proj].c_str()); \
+        tree->Branch(hname, &ARR[iL][proj]); \
       }
 
     BOOK("BPIX", vBPIX_TRKTriplets_, nBPIX)
@@ -68,9 +68,11 @@ RecHitAnalyzer::branchesTRKTriplets(TTree *tree,
 
 void
 RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
-                                      const edm::EventSetup& iSetup,
-                                      unsigned int      proj)
+  const edm::EventSetup& iSetup, unsigned int proj)
 {
+  const TrackerTopology&  tTopo  = iSetup.getData(tTopoToken_);
+  const TrackerGeometry*  tkGeom = &iSetup.getData(tkGeomToken_);
+
   zeroContainer(vBPIX_TRKTriplets_);
   zeroContainer(vFPIX_TRKTriplets_);
   zeroContainer(vTIB_TRKTriplets_ );
@@ -78,9 +80,8 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   zeroContainer(vTOB_TRKTriplets_ );
   zeroContainer(vTEC_TRKTriplets_ );
 
-  auto pushHit = [&](std::vector<HitTriple> layerHits[],
-                     int layerIdx,
-                     float value, float eta, float phi)
+  auto pushHit = [&](std::vector<HitTriple> layerHits[], int layerIdx,
+    float value, float eta, float phi)
   {
     layerHits[layerIdx].push_back({value, eta, phi});
   };
@@ -108,14 +109,25 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   std::vector<HitTriple> scratchTEC[nTEC];
 
   for (auto const& trk : *tracks) {
-    float pt  = trk.pt();
+    float pt = trk.pt();
     for (auto const& hit : trk.recHits()) {
       if (!hit || !hit->isValid()) continue;
 
-      DetId detId = hit->geographicalId();
+      DetId id( spr::findDetIdECAL(&caloGeom, eta_for_id, phi_for_id, false) );
+      if (id == DetId(0)) continue;
+
+      if (kSnapToCrystalCenter) {
+        auto const cell = caloGeom.getGeometry(id); // shared_ptr<const CaloCellGeometry>
+        if (!cell) continue; // check pointer is valid
+        const GlobalPoint& gp = cell->getPosition();
+        eta = gp.eta();
+        phi = wrapPhi(gp.phi());
+      } else {
+        phi = wrapPhi(phi);
+      }
       unsigned layer = getLayer(detId, &tTopo) - 1;
 
-      const auto  *detUnit = tkGeom->idToDetUnit(detId);
+      const auto *detUnit = tkGeom->idToDetUnit(detId);
       GlobalPoint gp = detUnit->surface().toGlobal(hit->localPosition());
       float eta = gp.eta();
       float phi = gp.phi();
@@ -132,15 +144,14 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
     }
   }
 
-  auto flushLayer = [](const std::vector<HitTriple> &src,
-                       std::vector<float>           &dest)
+  auto flushLayer = [](const std::vector<HitTriple> &src, std::vector<float> &dest)
   {
     std::vector<HitTriple> ordered(src);
     std::sort(ordered.begin(), ordered.end());     // descending by value
 
     const unsigned nKeep = std::min<unsigned>(ordered.size(), kMaxTripletHits);
     for (unsigned i = 0; i < nKeep; ++i) {
-      dest[3*i]   = ordered[i].value;
+      dest[3*i] = ordered[i].value;
       dest[3*i+1] = ordered[i].eta;
       dest[3*i+2] = ordered[i].phi;
     }

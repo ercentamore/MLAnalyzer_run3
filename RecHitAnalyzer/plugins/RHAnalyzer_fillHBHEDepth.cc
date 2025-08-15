@@ -1,19 +1,19 @@
-static constexpr int HBHE_MAX_DEPTH = 7;
-static constexpr int N_IETA_BINS    = 2 * (HBHE_IETA_MAX_HE-1);
-static constexpr int N_PIXELS_2D    = HBHE_IPHI_NUM * N_IETA_BINS;
-static constexpr int N_PIXELS_3D    = HBHE_MAX_DEPTH * N_PIXELS_2D;
+#include "MLAnalyzer_run3/RecHitAnalyzer/interface/RecHitAnalyzer.h"
 
-TH2F          *hEvt_HBHE_energy;
-TProfile2D    *hHBHE_energy_EB;
-TProfile2D    *hHBHE_energy;
+static constexpr int HBHE_MAX_DEPTH = 7;
+static constexpr int N_IETA_BINS = 2 * (HBHE_IETA_MAX_HE-1);
+static constexpr int N_PIXELS_2D = HBHE_IPHI_NUM * N_IETA_BINS;
+static constexpr int N_PIXELS_3D = HBHE_MAX_DEPTH * N_PIXELS_2D;
+
+TH2F *hEvt_HBHE_energy;
+TProfile2D *hHBHE_energy_EB;
+TProfile2D *hHBHE_energy;
 
 std::vector<float> vHBHE_energy_EB_;
 std::vector<float> vHBHE_energy_;
 std::vector<float> vHBHE_energy_depth_;
 
-void RecHitAnalyzer::branchesHBHE ( TTree               *tree,
-                                    edm::Service<TFileService> &fs ) {
-
+void RecHitAnalyzer::branchesHBHE ( TTree *tree, edm::Service<TFileService> &fs ) {
   tree->Branch( "HBHE_energy_EB", &vHBHE_energy_EB_ );
   tree->Branch( "HBHE_energy"   , &vHBHE_energy_    );
 
@@ -37,9 +37,7 @@ void RecHitAnalyzer::branchesHBHE ( TTree               *tree,
 
 
 
-void RecHitAnalyzer::fillHBHE ( const edm::Event      &iEvent,
-                                const edm::EventSetup &iSetup ) {
-
+void RecHitAnalyzer::fillHBHE ( const edm::Event &iEvent, const edm::EventSetup &iSetup ) {
   vHBHE_energy_EB_.assign ( 2 * HBHE_IPHI_NUM * HBHE_IETA_MAX_EB         , 0.f );
   vHBHE_energy_   .assign ( N_PIXELS_2D                                    , 0.f );
   vHBHE_energy_depth_.assign( N_PIXELS_3D                                  , 0.f );
