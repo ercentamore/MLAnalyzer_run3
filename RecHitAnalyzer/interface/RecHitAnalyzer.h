@@ -173,8 +173,8 @@ using namespace classic_svFit;
 // constructor "usesResource("TFileService");"
 // This will improve performance in multithreaded jobs.
 
-//static const unsigned int Nproj = 5;
-static const unsigned int Nproj = 1;
+static const unsigned int Nproj = 5;
+// static const unsigned int Nproj = 1;
 static const unsigned int Nhitproj = 1;
 static const unsigned int Nadjproj = 2;
 

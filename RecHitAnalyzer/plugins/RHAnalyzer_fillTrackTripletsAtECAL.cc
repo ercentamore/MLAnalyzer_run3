@@ -9,7 +9,7 @@ static constexpr float        kTripletPad       = -999.f;
 static constexpr bool         kSnapToCrystalCenter = true;
 
 // One std::vector<float> per channel & projection
-extern std::vector<float> vECAL_tracksTriplet_  [Nproj];
+extern std::vector<float> vECAL_tracksTriplet_[Nproj];
 extern std::vector<float> vECAL_tracksPtTriplet_[Nproj];
 
 #define DEFINE_TRIPLET_ARRAY(name) std::vector<float> name[Nproj];
