@@ -90,7 +90,7 @@ bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, 
       vAs_diphoton.push_back( iG );
       vH += iGen->p4();
 
-    } else if ( abs(iGen->daughter(0)->pdgId()) == 15 || abs(iGen->daughter(1)->pdgId()) == 15 ) {
+    } else if ( abs(iGen->daughter(0)->pdgId()) == 21 || abs(iGen->daughter(1)->pdgId()) == 21 ) {
       if ( debug ) std::cout<<"*****************************************************"<< std::endl;
       if ( debug ) std::cout<< "iG:" << iG << " ID:" << iGen->pdgId() << " A->ditau mass:" << iGen->mass() << std::endl;
       vAs_ditau.push_back( iG );
