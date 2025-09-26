@@ -39,7 +39,7 @@ struct gen_obj {
 };
 
 // Initialize branches _____________________________________________________//
-void RecHitAnalyzer::branchesEvtSel_jet_h2aa2digluon_dipho ( TTree* tree, edm::Service<TFileService> &fs )
+void RecHitAnalyzer::branchesEvtSel_jet_h2aa2ditau_dipho ( TTree* tree, edm::Service<TFileService> &fs )
 {
   tree->Branch("A_diphoton_gen_m0",         &vA_diphoton_gen_m0_);
   tree->Branch("A_diphoton_gen_dR",         &vA_diphoton_gen_dR_);
@@ -63,7 +63,7 @@ void RecHitAnalyzer::branchesEvtSel_jet_h2aa2digluon_dipho ( TTree* tree, edm::S
 }
 
 // Run event selection ___________________________________________________________________//
-bool RecHitAnalyzer::runEvtSel_jet_h2aa2digluon_dipho ( const edm::Event& iEvent, const edm::EventSetup& iSetup ) {
+bool RecHitAnalyzer::runEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, const edm::EventSetup& iSetup ) {
   edm::Handle<reco::GenParticleCollection> genParticles;
   iEvent.getByToken(genParticleCollectionT_, genParticles);
   edm::Handle<reco::PhotonCollection> photons;
@@ -151,7 +151,7 @@ bool RecHitAnalyzer::runEvtSel_jet_h2aa2digluon_dipho ( const edm::Event& iEvent
 }
 
 // Fill branches ___________________________________________________________________//
-void RecHitAnalyzer::fillEvtSel_jet_h2aa2digluon_dipho ( const edm::Event& iEvent, const edm::EventSetup& iSetup )
+void RecHitAnalyzer::fillEvtSel_jet_h2aa2ditau_dipho ( const edm::Event& iEvent, const edm::EventSetup& iSetup )
 {
 
   edm::Handle<reco::GenParticleCollection> genParticles;
