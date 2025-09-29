@@ -56,7 +56,7 @@ print (" >> Loaded",len(options.inputFiles),"input files from list.")
 
 process.options = cms.untracked.PSet(
     wantSummary = cms.untracked.bool(True)
-    # ,SkipEvent = cms.untracked.vstring('ProductNotFound')
+    ,SkipEvent = cms.untracked.vstring('ProductNotFound') #this line was originally commented out
     ,numberOfThreads = cms.untracked.uint32(8)
 )
 
