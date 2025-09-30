@@ -15,32 +15,32 @@ std::vector<float> vHBHE_energy_depth_;
 
 void RecHitAnalyzer::branchesHBHE ( TTree *tree, edm::Service<TFileService> &fs ) {
   tree->Branch( "HBHE_energy_EB", &vHBHE_energy_EB_ );
-  tree->Branch( "HBHE_energy"   , &vHBHE_energy_    );
+  tree->Branch( "HBHE_energy", &vHBHE_energy_ );
 
   tree->Branch( "HBHE_energy_depth", &vHBHE_energy_depth_ );
 
   hEvt_HBHE_energy = new TH2F("evt_HBHE_energy",
                               "E(i#phi,i#eta);i#phi;i#eta",
-                              HBHE_IPHI_NUM,           HBHE_IPHI_MIN-1, HBHE_IPHI_MAX,
-                              N_IETA_BINS,            -(HBHE_IETA_MAX_HE-1), HBHE_IETA_MAX_HE-1 );
+                              HBHE_IPHI_NUM, HBHE_IPHI_MIN-1, HBHE_IPHI_MAX,
+                              N_IETA_BINS, -(HBHE_IETA_MAX_HE-1), HBHE_IETA_MAX_HE-1 );
 
-  hHBHE_energy = fs->make<TProfile2D>( "HBHE_energy",
-                                       "E(i#phi,i#eta);i#phi;i#eta",
-                                       HBHE_IPHI_NUM, HBHE_IPHI_MIN-1, HBHE_IPHI_MAX,
-                                       2*HBHE_IETA_MAX_HE, -HBHE_IETA_MAX_HE, HBHE_IETA_MAX_HE );
+  hHBHE_energy = fs->make<TProfile2D>("HBHE_energy",
+                                      "E(i#phi,i#eta);i#phi;i#eta",
+                                      HBHE_IPHI_NUM, HBHE_IPHI_MIN-1, HBHE_IPHI_MAX,
+                                      2*HBHE_IETA_MAX_HE, -HBHE_IETA_MAX_HE, HBHE_IETA_MAX_HE );
 
-  hHBHE_energy_EB = fs->make<TProfile2D>( "HBHE_energy_EB",
-                                          "E(i#phi,i#eta);i#phi;i#eta",
-                                          HBHE_IPHI_NUM, HBHE_IPHI_MIN-1, HBHE_IPHI_MAX,
-                                          2*HBHE_IETA_MAX_EB, -HBHE_IETA_MAX_EB, HBHE_IETA_MAX_EB );
+  hHBHE_energy_EB = fs->make<TProfile2D>("HBHE_energy_EB",
+                                         "E(i#phi,i#eta);i#phi;i#eta",
+                                         HBHE_IPHI_NUM, HBHE_IPHI_MIN-1, HBHE_IPHI_MAX,
+                                         2*HBHE_IETA_MAX_EB, -HBHE_IETA_MAX_EB, HBHE_IETA_MAX_EB );
 } // branchesHBHE
 
 
 
-void RecHitAnalyzer::fillHBHE ( const edm::Event &iEvent, const edm::EventSetup &iSetup ) {
-  vHBHE_energy_EB_.assign ( 2 * HBHE_IPHI_NUM * HBHE_IETA_MAX_EB         , 0.f );
-  vHBHE_energy_   .assign ( N_PIXELS_2D                                    , 0.f );
-  vHBHE_energy_depth_.assign( N_PIXELS_3D                                  , 0.f );
+void RecHitAnalyzer::fillHBHE( const edm::Event &iEvent, const edm::EventSetup &iSetup ) {
+  vHBHE_energy_EB_.assign( 2 * HBHE_IPHI_NUM * HBHE_IETA_MAX_EB, 0.f );
+  vHBHE_energy_.assign( N_PIXELS_2D, 0.f );
+  vHBHE_energy_depth_.assign( N_PIXELS_3D, 0.f );
   hEvt_HBHE_energy->Reset();
 
   edm::Handle<HBHERecHitCollection> HBHERecHitsH_;
@@ -80,27 +80,27 @@ void RecHitAnalyzer::fillHBHE ( const edm::Event &iEvent, const edm::EventSetup 
 
       float eHalf = 0.5f * energy;
 
-      hHBHE_energy->Fill( iphi   , ieta , eHalf );
-      hHBHE_energy->Fill( iphi+1 , ieta , eHalf );
+      hHBHE_energy->Fill( iphi, ieta, eHalf );
+      hHBHE_energy->Fill( iphi+1, ieta, eHalf );
 
-      hEvt_HBHE_energy->Fill( iphi   , ieta , eHalf );
-      hEvt_HBHE_energy->Fill( iphi+1 , ieta , eHalf );
+      hEvt_HBHE_energy->Fill( iphi, ieta , eHalf );
+      hEvt_HBHE_energy->Fill( iphi+1, ieta, eHalf );
 
-      addToDepthImage( depthIdx, ieta,  iphi   , eHalf );
-      addToDepthImage( depthIdx, ieta,  iphi+1 , eHalf );
+      addToDepthImage( depthIdx, ieta, iphi, eHalf );
+      addToDepthImage( depthIdx, ieta, iphi+1, eHalf );
     }
 
     else {
 
-      hHBHE_energy->Fill ( iphi , ieta , energy );
-      hEvt_HBHE_energy->Fill( iphi , ieta , energy );
+      hHBHE_energy->Fill ( iphi, ieta, energy );
+      hEvt_HBHE_energy->Fill( iphi, ieta, energy );
 
       addToDepthImage( depthIdx, ieta, iphi, energy );
     }
 
     if ( hId.ietaAbs() > HBHE_IETA_MAX_EB ) continue;
 
-    hHBHE_energy_EB->Fill( iphi , ieta , energy );
+    hHBHE_energy_EB->Fill( iphi, ieta, energy );
 
     int idxEB = ( ieta + HBHE_IETA_MAX_EB ) * HBHE_IPHI_NUM + iphi;
     vHBHE_energy_EB_[ idxEB ] += energy;
