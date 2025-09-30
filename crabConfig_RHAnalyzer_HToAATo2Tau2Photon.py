@@ -12,8 +12,8 @@ config = config()
 Mass_tag = 'm3p6To8'
 # Local job directory will be created in:
 # <config.General.workArea>/<config.General.requestName>
-config.General.workArea        = 'crab_RHAnalyzer'
-config.General.requestName     = 'RHAnalyzer_HToAATo2Tau2Photon_M%s'%Mass_tag
+config.General.workArea        = 'large_scale_runs'
+config.General.requestName     = 'HToAATo2TauHad2Photon_RHAnalyzer_%s'%Mass_tag
 config.General.transferOutputs = True
 config.General.transferLogs    = True
 
