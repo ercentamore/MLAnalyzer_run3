@@ -92,13 +92,8 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   edm::Handle<SiStripRecHit2DCollection>  stripRPhiRecHitColl;
   iEvent.getByToken(siStripRPhiRecHitCollectionT_, stripRPhiRecHitColl);
 
-  edm::EDGetTokenT<reco::TrackCollection> tracksToken_;
-
-  tracksToken_ = consumes<reco::TrackCollection>
-                  (edm::InputTag("generalTracks"));
-
-  edm::Handle<reco::TrackCollection> tracks;
-  iEvent.getByToken(tracksToken_, tracks);
+  edm::Handle<reco::TrackCollection> trackCollection;
+  iEvent.getByToken(trackCollectionT_, trackCollection);
 
   // one scratch vector per BPIX/FPIX layer
   std::vector<HitTriple> scratchBPIX[nBPIX];
@@ -108,7 +103,7 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   std::vector<HitTriple> scratchTID[nTID];
   std::vector<HitTriple> scratchTEC[nTEC];
 
-  for (auto const& trk : *tracks) {
+  for (auto const& trk : *trackCollection) {
     float pt = trk.pt();
     for (auto const& hit : trk.recHits()) {
       if (!hit || !hit->isValid()) continue;
