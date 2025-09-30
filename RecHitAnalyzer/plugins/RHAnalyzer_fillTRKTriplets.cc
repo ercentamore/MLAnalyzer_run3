@@ -103,7 +103,7 @@ RecHitAnalyzer::fillTRKTriplets(const edm::Event&  iEvent,
   std::vector<HitTriple> scratchTID[nTID];
   std::vector<HitTriple> scratchTEC[nTEC];
 
-  for (auto const& trk : *tracks) {
+  for (auto const& trk : *trackCollection) {
     float pt = trk.pt();
     for (auto const& hit : trk.recHits()) {
       if (!hit || !hit->isValid()) continue;
