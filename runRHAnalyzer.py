@@ -2,7 +2,7 @@ import os
 
 #cfg='RecHitAnalyzer/python/ConfFile_data_cfg.py'
 cfg='RecHitAnalyzer/python/ConfFile_cfg.py'
-inputFiles_='file:/uscms/home/ecentamo/nobackup/CMSSW_13_0_13/src/MCProduction/E2E-HToAATo2Tau2Photon/AOD_HToAATo2Gluon2Photon_extra_collection.root'#pixel checks
+inputFiles_='file:/uscms/home/ecentamo/nobackup/CMSSW_13_0_13/src/MCProduction/E2E-HToAATo2Tau2Photon/MiniAOD_HToAATo2Gluon2Photon.root'#pixel checks
 # inputFiles_='file:step3_AODSIM_M14_1.root'
 
 maxEvents_=-1
