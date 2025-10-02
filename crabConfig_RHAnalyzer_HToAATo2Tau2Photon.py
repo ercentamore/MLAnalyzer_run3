@@ -29,7 +29,7 @@ config.JobType.numCores = 8
 config.Data.inputDBS = 'phys03'
 config.JobType.allowUndistributedCMSSW = True
 # Define input and units per job here:
-dataset  = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-m3p6To8_MiniAODSIM-d639958dfa8e672fc82464be0b06406f/USER'
+dataset  = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-HToAATo2TauHad2Photon_m3p6To8_pythia8_AOD-953b1873547799e513f8a43f2c57e3b2/USER'
 
 
 config.Data.inputDataset   = dataset
