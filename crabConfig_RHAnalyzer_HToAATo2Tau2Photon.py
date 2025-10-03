@@ -19,7 +19,7 @@ config.General.transferLogs    = True
 
 # CMS cfg file goes here:
 config.JobType.pluginName  = 'Analysis' # mass > 8 use this
-config.JobType.psetName    = 'RecHitAnalyzer/python/ConfFile_cfg.py' # cms cfg file for generating events
+config.JobType.psetName    = '/uscms/home/ereinhar/nobackup/CMSSW_13_0_13/src/MLAnalyzer_run3/RecHitAnalyzer/python/ConfFile_cfg.py' # cms cfg file for generating events
 # config.JobType.maxMemoryMB = 5000 #5000
 
 
@@ -42,7 +42,7 @@ config.Data.publication    = False
 
 # Output files will be stored in config.Site.storageSite at directory:
 # <config.Data.outLFNDirBase>/<config.Data.outputPrimaryDataset>/<config.Data.outputDatasetTag>/
-config.Data.outLFNDirBase = '/store/user/ereinhar/MCGeneration_run3'
+config.Data.outLFNDirBase = '/store/group/lpcml/ereinhar/MC_signal'
 
 config.Site.storageSite = 'T3_US_FNALLPC'
 config.Data.outputDatasetTag = config.General.requestName
