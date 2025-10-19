@@ -19,7 +19,7 @@ config.General.transferLogs    = True
 
 # CMS cfg file goes here:
 config.JobType.pluginName  = 'Analysis' # mass > 8 use this
-config.JobType.psetName    = 'RecHitAnalyzer/python/ConfFile_cfg.py' # cms cfg file for generating events
+config.JobType.psetName    = '/uscms/home/ereinhar/nobackup/CMSSW_13_0_13/src/MLAnalyzer_run3/RecHitAnalyzer/python/ConfFile_cfg.py' # cms cfg file for generating events
 # config.JobType.maxMemoryMB = 5000 #5000
 
 
@@ -29,7 +29,7 @@ config.JobType.numCores = 8
 config.Data.inputDBS = 'phys03'
 config.JobType.allowUndistributedCMSSW = True
 # Define input and units per job here:
-dataset  = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-m3p6To8_MiniAODSIM-d639958dfa8e672fc82464be0b06406f/USER'
+dataset  = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-HToAATo2TauHad2Photon_m3p6To8_pythia8_AOD-953b1873547799e513f8a43f2c57e3b2/USER'
 
 
 config.Data.inputDataset   = dataset
@@ -42,7 +42,7 @@ config.Data.publication    = False
 
 # Output files will be stored in config.Site.storageSite at directory:
 # <config.Data.outLFNDirBase>/<config.Data.outputPrimaryDataset>/<config.Data.outputDatasetTag>/
-config.Data.outLFNDirBase = '/store/user/ereinhar/MCGeneration_run3'
+config.Data.outLFNDirBase = '/store/group/lpcml/ereinhar/MC_signal'
 
 config.Site.storageSite = 'T3_US_FNALLPC'
 config.Data.outputDatasetTag = config.General.requestName
