@@ -13,13 +13,13 @@ Mass_tag = 'm3p6To8'
 # Local job directory will be created in:
 # <config.General.workArea>/<config.General.requestName>
 config.General.workArea        = 'large_scale_runs'
-config.General.requestName     = 'HToAATo2TauHad2Photon_RHAnalyzer_%s'%Mass_tag
+config.General.requestName     = 'HToAATo2Gluon2Photon_RHAnalyzer_%s'%Mass_tag
 config.General.transferOutputs = True
 config.General.transferLogs    = True
 
 # CMS cfg file goes here:
 config.JobType.pluginName  = 'Analysis' # mass > 8 use this
-config.JobType.psetName    = '/uscms/home/ereinhar/nobackup/CMSSW_13_0_13/src/MLAnalyzer_run3/RecHitAnalyzer/python/ConfFile_cfg.py' # cms cfg file for generating events
+config.JobType.psetName    = '/uscms/home/ecentamo/nobackup/CMSSW_13_0_13/src/MLAnalyzer_run3/RecHitAnalyzer/python/ConfFile_cfg.py' # cms cfg file for generating events
 # config.JobType.maxMemoryMB = 5000 #5000
 
 
@@ -29,10 +29,10 @@ config.JobType.numCores = 8
 config.Data.inputDBS = 'phys03'
 config.JobType.allowUndistributedCMSSW = True
 # Define input and units per job here:
-dataset  = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-HToAATo2TauHad2Photon_m3p6To8_pythia8_AOD-953b1873547799e513f8a43f2c57e3b2/USER'
+inputFiles  = open('/uscms/home/ecentamo/nobackup/CMSSW_13_0_13/src/MCProduction/E2E-HToAATo2Tau2Photon/MiniAOD_file_list.txt').readlines()
 
 
-config.Data.inputDataset   = dataset
+config.Data.userInputFiles   = inputFiles
 config.Data.splitting      = 'FileBased'
 config.Data.unitsPerJob    = 1  # units: as defined by config.Data.splitting
 config.Data.totalUnits     = -1 # -1: all inputs. total jobs submitted = totalUnits / unitsPerJob. cap of 10k jobs per submission
@@ -42,7 +42,7 @@ config.Data.publication    = False
 
 # Output files will be stored in config.Site.storageSite at directory:
 # <config.Data.outLFNDirBase>/<config.Data.outputPrimaryDataset>/<config.Data.outputDatasetTag>/
-config.Data.outLFNDirBase = '/store/group/lpcml/ereinhar/MC_signal'
+config.Data.outLFNDirBase = '/store/user/ecentamo'
 
 config.Site.storageSite = 'T3_US_FNALLPC'
 config.Data.outputDatasetTag = config.General.requestName
