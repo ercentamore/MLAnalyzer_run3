@@ -35,7 +35,7 @@ process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 process.load("RecoLocalCalo.EcalRecAlgos.EcalSeverityLevelESProducer_cfi")
 
 process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
-process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
+process.load("ReGluonTag.Configuration.RecoPFGluonTag_cff")
 
 process.TrackRefitter.TTRHBuilder = 'WithAngleAndTemplate'
 process.MeasurementTrackerEvent.inactivePixelDetectorLabels = cms.VInputTag() # to prebent worning:  fail to get the list of inactive pixel modules, because of 4.2/4.4 event content change. 
