@@ -2,7 +2,7 @@ import os
 
 #cfg='RecHitAnalyzer/python/ConfFile_data_cfg.py'
 cfg='RecHitAnalyzer/python/ConfFile_cfg.py'
-inputFiles_=open('/uscms/home/ecentamo/nobackup/CMSSW_13_0_13/src/MCProduction/E2E-HToAATo2Tau2Photon/MiniAOD_file_list.txt').readlines()#pixel checks #!!specify to read only root files, not log files!!
+inputFiles_= 'file:/uscms/home/ecentamo/nobackup/CMSSW_13_0_13/src/MCProduction/E2E-HToAATo2Tau2Photon/MiniAOD_file_list.txt' #pixel checks
 # inputFiles_='file:step3_AODSIM_M14_1.root'
 
 maxEvents_=-1
