@@ -29,7 +29,7 @@ config.JobType.numCores = 8
 config.Data.inputDBS = 'phys03'
 config.JobType.allowUndistributedCMSSW = True
 # Define input and units per job here:
-inputFiles  = open('/uscms/home/ecentamo/nobackup/CMSSW_13_0_13/src/MCProduction/E2E-HToAATo2Tau2Photon/MiniAOD_file_list.txt').readlines()
+inputFiles  = open('/uscms/home/ecentamo/nobackup/CMSSW_13_0_13/src/MCProduction/E2E-HToAATo2Tau2Photon/AOD_file_list.txt').readlines()
 
 
 config.Data.userInputFiles   = inputFiles
