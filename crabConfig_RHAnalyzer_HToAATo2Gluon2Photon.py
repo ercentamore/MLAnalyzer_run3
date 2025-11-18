@@ -13,7 +13,7 @@ Mass_tag = 'm3p6To8'
 # Local job directory will be created in:
 # <config.General.workArea>/<config.General.requestName>
 config.General.workArea        = 'large_scale_runs'
-config.General.requestName     = 'HToAATo2Gluon2Photon_RHAnalyzer_%s'%Mass_tag
+config.General.requestName     = 'HToAATo2Gluon2Photon_RHAnalyzer_%s_2'%Mass_tag
 config.General.transferOutputs = True
 config.General.transferLogs    = True
 
